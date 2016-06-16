@@ -1,3 +1,7 @@
+import com.sun.istack.internal.NotNull;
+import org.omg.CORBA.DataOutputStream;
+import org.omg.CORBA.INTERNAL;
+
 /**
  * Created by Douglas Schonholtz on 6/16/2016.
  */
@@ -10,16 +14,48 @@ public class Crop {
     private String variety; // VARCHAR(128),
     //PRIMARY KEY(crop_name, variety),
 
-    private String seed_source; //VARCHAR(256) DEFAULT NULL,
-    private String num_seeds; //INT(32) DEFAULT 0,
-    private double germination_yield_proj; //DOUBLE(9,8) DEFAULT NULL,
-    private double germination_yield_act; // DOUBLE(9,8) DEFAULT NULL,
-    private double feet_between_plants; // DOUBLE(9,8) DEFAULT 1.0,
-    private String part_num; // VARCHAR(256) DEFAULT NULL,
-    private double cost; // DOUBLE (8,2) DEFAULT NULL,
-    private int qty;// INT DEFAULT NULL, # The number of packs that were bought
-    private String packType;
-    private String notes; // VARCHAR(512)
+    private String seed_source = null; //VARCHAR(256) DEFAULT NULL,
+    private Integer num_seeds = null; //INT(32) DEFAULT 0,
+    private Double germination_yield_proj = null; //DOUBLE(9,8) DEFAULT NULL,
+    private Double germination_yield_act = null; // DOUBLE(9,8) DEFAULT NULL,
+    private Double feet_between_plants = null; // DOUBLE(9,8) DEFAULT 1.0,
+    private String part_num = null; // VARCHAR(256) DEFAULT NULL,
+    private Double cost = null; // DOUBLE (8,2) DEFAULT NULL,
+    private Integer qty = null;// INT DEFAULT NULL, # The number of packs that were bought
+    private String packType = null;
+    private String notes = null; // VARCHAR(512)
+
+
+    public Crop(String cropName, String variety, String seed_source, Integer num_seeds, Double germination_yield_proj,
+                Double germination_yield_act, Double feet_between_plants, String part_num, Double cost,
+                Integer qty, String packType, String notes) {
+        this.cropName = cropName;
+        this.variety = variety;
+        this.num_seeds = num_seeds;
+        this.germination_yield_proj = germination_yield_proj;
+        this.germination_yield_act = germination_yield_act;
+        this.feet_between_plants = feet_between_plants;
+        this.part_num = part_num;
+        this.cost = cost;
+        this.qty = qty;
+        this.packType = packType;
+        this.seed_source = seed_source;
+        this.notes = notes;
+    }
+
+    public Crop(String cropName, String variety) {
+        if(cropName == null || cropName.length() > 128) {
+            throw new IllegalArgumentException("CropName must be valid");
+        }
+        if(variety != null || variety.length() > 128) {
+            throw new IllegalArgumentException("Variety must be valid");
+        }
+        this.cropName = cropName;
+        this.variety = variety;
+    }
+    public Crop() {
+        throw new IllegalArgumentException("Crops need to have crop_name, and Variety");
+    }
 
     public String getCropName() {
         return cropName;
@@ -42,14 +78,17 @@ public class Crop {
     }
 
     public void setSeed_source(String seed_source) {
+        if(seed_source.length() > 256) {
+            throw new IllegalArgumentException("Seed source must be less than 256 characters");
+        }
         this.seed_source = seed_source;
     }
 
-    public String getNum_seeds() {
+    public Integer getNum_seeds() {
         return num_seeds;
     }
 
-    public void setNum_seeds(String num_seeds) {
+    public void setNum_seeds(Integer num_seeds) {
         this.num_seeds = num_seeds;
     }
 
@@ -82,6 +121,9 @@ public class Crop {
     }
 
     public void setPart_num(String part_num) {
+        if(part_num.length() > 256) {
+            throw new IllegalArgumentException("Part Numbers have a limit of 256 characters.");
+        }
         this.part_num = part_num;
     }
 
@@ -114,14 +156,11 @@ public class Crop {
     }
 
     public void setNotes(String notes) {
+        if(notes.length() > 512) {
+            throw new IllegalArgumentException("Notes must be less than 512 characters");
+        }
         this.notes = notes;
     }
 
-    public Crop(String cropName, String variety) {
-        this.cropName = cropName;
-        this.variety = variety;
-    }
-    public Crop() {
-        throw new IllegalArgumentException("Crops need to have crop_name, and Variety");
-    }
+
 }

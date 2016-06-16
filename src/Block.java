@@ -9,7 +9,7 @@ public class Block {
             throw new IllegalArgumentException("BlockID's are constrained to 2 characters");
         }
         this.blockID = blockID;
-        this.notes = "";
+        this.notes = null;
     }
 
     /**
@@ -44,6 +44,9 @@ public class Block {
      * @param notes
      */
     public void setNotes(String notes) {
+        if(notes.length() > 512) {
+            throw new IllegalArgumentException("Notes must be less than 512 characters");
+        }
         this.notes = notes;
     }
 }

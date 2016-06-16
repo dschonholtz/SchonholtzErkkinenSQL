@@ -14,7 +14,7 @@ public class Bed {
         }
         this.blockID = blockID;
         this.bedID = bedID;
-        this.notes = "";
+        this.notes = null;
 
     }
 
@@ -69,6 +69,9 @@ public class Bed {
      * @param notes
      */
     public void setNotes(String notes) {
+        if(notes.length() > 512) {
+            throw new IllegalArgumentException("Notes must be less than 512 characters");
+        }
         this.notes = notes;
     }
 }
