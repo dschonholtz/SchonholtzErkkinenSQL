@@ -18,7 +18,7 @@ public class Crop {
     private Integer num_seeds = null; //INT(32) DEFAULT 0,
     private Double germination_yield_proj = null; //DOUBLE(9,8) DEFAULT NULL,
     private Double germination_yield_act = null; // DOUBLE(9,8) DEFAULT NULL,
-    private Double feet_between_plants = null; // DOUBLE(9,8) DEFAULT 1.0,
+    private Double feet_between_plants = 1.0; // DOUBLE(9,8) DEFAULT 1.0,
     private String part_num = null; // VARCHAR(256) DEFAULT NULL,
     private Double cost = null; // DOUBLE (8,2) DEFAULT NULL,
     private Integer qty = null;// INT DEFAULT NULL, # The number of packs that were bought

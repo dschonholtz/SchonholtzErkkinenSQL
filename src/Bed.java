@@ -1,5 +1,6 @@
 /**
- * Created by dschonholtz on 6/16/2016.
+ * Created by Douglas Schonholt on 6/16/2016.
+ * The file structure for Beds.
  */
 public class Bed {
     String blockID;

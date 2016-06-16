@@ -1,3 +1,4 @@
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -19,14 +20,81 @@ public interface IModel {
     /**
      * Gets all of the harvest ready plants anywhere
      */
-    List<List<String>> getHarvestable();
+    List<List<Object>> getHarvestable();
+
+    /**
+     * Returns beds with at least feet space in them
+     * @param feet - The feet comparison
+     * @return - The beds that have at least that many feet
+     */
+    List<Bed> GetValidBed(int feet);
+
+    /**
+     *
+     * @param c - The crop type
+     * @param numPlants - The number of plants that need to be inserted into a bed.
+     * @return - All of the beds with crop.feet_between_plants* num plants space left.
+     */
+    List<Bed> getValdBed(Crop c, int numPlants);
+
+    /**
+     * Inserts a block into the table of blocks
+     * @param blockID
+     * @param notes
+     * @return
+     */
+    List<List<Object>> insertBlock(String blockID, String notes);
 
     /**
      * If a record with this primary key already exists then it updates its values.
-     * Otherwise it
+     * Otherwise create the value and add it.
+     * Return the updated table.
      * @param blockID - The blockID; must be 2 characters or less.
      * @param bedID - The BedID; must 32 characters or less
      * @return - Returns the updated beds.
      */
-    List<List<String>> insertOrUpdateBed(String blockID, String bedID, String notes);
+    List<List<Object>> insertOrUpdateBed(String blockID, String bedID, String notes);
+
+
+    /**
+     *
+     * @param cropName
+     * @param variety
+     * @param seed_source
+     * @param num_seeds
+     * @param germination_yield_proj
+     * @param germination_yield_act
+     * @param feet_between_plants
+     * @param part_num
+     * @param cost
+     * @param qty
+     * @param packType
+     * @param notes
+     * @return - Updates the crop table and returns it
+     */
+    List<List<Object>> insertOrUpdateCrop(String cropName, String variety, String seed_source, Integer num_seeds,
+                                          Double germination_yield_proj, Double germination_yield_act,
+                                          Double feet_between_plants, String part_num, Double cost, Integer qty,
+                                          String packType, String notes);
+
+    /**
+     *
+     * @param blockID
+     * @param bedID
+     * @param cropName
+     * @param variety
+     * @param numPlants
+     * @param projectedHarvest
+     * @param actualHarvest
+     * @param notes
+     * @return - Updates the cropLocation table and returns it.
+     */
+    List<List<Object>> insertOrUpdateCropLocation(String blockID, String bedID, String cropName, String variety,
+                                                  Integer numPlants, Date projectedHarvest, Date actualHarvest,
+                                                  String notes);
+
+    List<List<Object>> insertOrUpdateTrayLocation(String blockID, String bedID, String notes);
+
+
+
 }
