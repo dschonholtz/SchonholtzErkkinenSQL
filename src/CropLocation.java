@@ -1,7 +1,7 @@
 import java.sql.Date;
 
 /**
- * Created by dschonholtz on 6/16/2016.
+ * Created by Douglas Schonholtz on 6/16/2016.
  */
 public class CropLocation {
 

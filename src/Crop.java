@@ -1,7 +1,3 @@
-import com.sun.istack.internal.NotNull;
-import org.omg.CORBA.DataOutputStream;
-import org.omg.CORBA.INTERNAL;
-
 /**
  * Created by Douglas Schonholtz on 6/16/2016.
  */
@@ -53,6 +49,7 @@ public class Crop {
         this.cropName = cropName;
         this.variety = variety;
     }
+
     public Crop() {
         throw new IllegalArgumentException("Crops need to have crop_name, and Variety");
     }

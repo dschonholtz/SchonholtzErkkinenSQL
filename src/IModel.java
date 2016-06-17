@@ -20,14 +20,14 @@ public interface IModel {
     /**
      * Gets all of the harvest ready plants anywhere
      */
-    List<List<Object>> getHarvestable();
+    List<Object> getHarvestable();
 
     /**
      * Returns beds with at least feet space in them
      * @param feet - The feet comparison
      * @return - The beds that have at least that many feet
      */
-    List<Bed> GetValidBed(int feet);
+    List<Object> GetValidBed(int feet);
 
     /**
      *
@@ -35,7 +35,7 @@ public interface IModel {
      * @param numPlants - The number of plants that need to be inserted into a bed.
      * @return - All of the beds with crop.feet_between_plants* num plants space left.
      */
-    List<Bed> getValdBed(Crop c, int numPlants);
+    List<Object> getValdBed(Crop c, int numPlants);
 
     /**
      * Inserts a block into the table of blocks
@@ -43,7 +43,14 @@ public interface IModel {
      * @param notes
      * @return
      */
-    List<List<Object>> insertBlock(String blockID, String notes);
+    List<Object> insertBlock(String blockID, String notes);
+
+    /**
+     * Deletes the block with this primary key
+     * @param blockID
+     * @return
+     */
+    List<Object> deleteBlock(String blockID);
 
     /**
      * If a record with this primary key already exists then it updates its values.
@@ -53,8 +60,15 @@ public interface IModel {
      * @param bedID - The BedID; must 32 characters or less
      * @return - Returns the updated beds.
      */
-    List<List<Object>> insertOrUpdateBed(String blockID, String bedID, String notes);
+    List<Object> insertOrUpdateBed(String blockID, String bedID, String notes);
 
+    /**
+     * Deletes a bed
+     * @param blockID
+     * @param bedID
+     * @return
+     */
+    List<Object> deleteBed(String blockID, String bedID);
 
     /**
      *
@@ -72,10 +86,18 @@ public interface IModel {
      * @param notes
      * @return - Updates the crop table and returns it
      */
-    List<List<Object>> insertOrUpdateCrop(String cropName, String variety, String seed_source, Integer num_seeds,
+    List<Object> insertOrUpdateCrop(String cropName, String variety, String seed_source, Integer num_seeds,
                                           Double germination_yield_proj, Double germination_yield_act,
                                           Double feet_between_plants, String part_num, Double cost, Integer qty,
                                           String packType, String notes);
+
+    /**
+     * Deletes a crop
+     * @param cropName
+     * @param variety
+     * @return
+     */
+    List<Object> deleteCrop(String cropName, String variety);
 
     /**
      *
@@ -89,11 +111,45 @@ public interface IModel {
      * @param notes
      * @return - Updates the cropLocation table and returns it.
      */
-    List<List<Object>> insertOrUpdateCropLocation(String blockID, String bedID, String cropName, String variety,
+    List<Object> insertOrUpdateCropLocation(String blockID, String bedID, String cropName, String variety,
                                                   Integer numPlants, Date projectedHarvest, Date actualHarvest,
                                                   String notes);
 
-    List<List<Object>> insertOrUpdateTrayLocation(String blockID, String bedID, String notes);
+    /**
+     * Delete croplocation
+     * @param blockID
+     * @param bedID
+     * @param cropName
+     * @param variety
+     * @return
+     */
+    List<Object> deleteCropLocation(String blockID, String bedID, String cropName, String variety);
+
+
+    /**
+     * In
+     * @param blockID
+     * @param bedID
+     * @param cropName
+     * @param variety
+     * @param numTrays
+     * @param trayType
+     * @param soilType
+     * @param seedsPerCell
+     * @return
+     */
+    List<Object> insertOrUpdateTrayLocation(String blockID, String bedID, String cropName, String variety,
+                                            Double numTrays, Integer trayType, String soilType, Integer seedsPerCell);
+
+    /**
+     *
+     * @param blockID
+     * @param bedID
+     * @param cropName
+     * @param variety
+     * @return
+     */
+    List<Object> deleteTrayLocation(String blockID, String bedID, String cropName, String variety);
 
 
 
