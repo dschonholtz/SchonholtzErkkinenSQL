@@ -1,3 +1,7 @@
+import javax.swing.*;
+import java.awt.*;
+import java.util.Objects;
+
 /**
  * Created by Douglas Schonholtz on 6/16/2016.
  * This shows the buttons and tables inherent with the view.
@@ -13,6 +17,38 @@
  *  -getValidBed(int feet)
  *
  */
-public class View {
+public class View extends JFrame {
+    private Model model;
+    final private ConcreteView concreteView;
+    private String username;
+    private String password;
+    private String databaseURL;
+
+    public View() {
+        this.concreteView = new ConcreteView();
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.getContentPane().add(concreteView);
+        this.pack();
+    }
+
+    public View(Model model) {
+        Objects.requireNonNull(model);
+        this.concreteView = new ConcreteView(model);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.getContentPane().add(concreteView);
+        this.pack();
+    }
+
+    public void run() {
+        this.repaint();
+        this.setVisible(true);
+    }
+
+    /**
+     * PSEUDOCODE
+     *
+     *
+     */
+
 
 }
