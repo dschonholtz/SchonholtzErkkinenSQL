@@ -18,7 +18,7 @@ public class Model implements IModel{
         data = new ArrayList<>();
     }
 
-    private void connect(String username, String password) {
+    public void connect(String username, String password) {
         this.username = username;
         this.password = password;
         Properties connectionProps = new Properties();
