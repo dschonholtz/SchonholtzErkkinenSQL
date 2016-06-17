@@ -26,8 +26,7 @@ public class Model implements IModel{
         connectionProps.put("password", this.password);
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://"
-                    + "jdbc:mysql://localhost:3306/finalporject", connectionProps);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalporject", connectionProps);
             System.out.println("Connected to database");
         } catch (Exception e) {
             System.out.println("ERROR: Could not connect to the database");
@@ -79,7 +78,18 @@ public class Model implements IModel{
     }
 
     @Override
-    public List<Object> deleteBlock(String blockID) {
+    public List<Object> deleteBlock(String blockID) throws SQLException {
+        CallableStatement pstat;
+        pstat = conn.prepareCall("{CALL delete_block(?)}");
+        pstat.setString(1, blockID);
+
+        pstat.execute();
+        // This does question 6
+        while (pstat.getResultSet().next())
+        {
+            System.out.println(pstat.getResultSet().getString(1));
+
+        }
         return null;
     }
 
@@ -91,7 +101,19 @@ public class Model implements IModel{
     @Override
     public List<Object> deleteBed(String blockID, String bedID) throws SQLException  {
         CallableStatement pstat;
-        pstat = conn.prepareCall("{call track_character(?)}");
+        pstat = conn.prepareCall("{CALL delete_bed(?, ?)}");
+        pstat.setString(1, blockID);
+        pstat.setString(2, bedID);
+
+        pstat.execute();
+        // This does question 6
+        while (pstat.getResultSet().next())
+        {
+            System.out.println(pstat.getResultSet().getString(1));
+            System.out.println(pstat.getResultSet().getString(2));
+            System.out.println(pstat.getResultSet().getString(3));
+
+        }
         return null;
     }
 
@@ -111,18 +133,28 @@ public class Model implements IModel{
     }
 
     @Override
-    public List<Object> deleteCropLocation(String blockID, String bedID, String cropName, String variety) {
-        return null;
-    }
+    public List<Object> deleteCropLocationTrayLocation(String blockID, String bedID, String cropName, String variety) throws SQLException {
+        CallableStatement pstat;
+        pstat = conn.prepareCall("{CALL delete_croploc_or_trayloc(?, ?, ?, ?)}");
+        pstat.setString(1, blockID);
+        pstat.setString(2, bedID);
+        pstat.setString(3, cropName);
+        pstat.setString(4, variety);
+
+        pstat.execute();
+        // This does question 6
+        while (pstat.getResultSet().next())
+        {
+            System.out.println(pstat.getResultSet().getString(1));
+            System.out.println(pstat.getResultSet().getString(2));
+            System.out.println(pstat.getResultSet().getString(3));
+
+        }
+        return null;    }
 
     @Override
     public List<Object> insertOrUpdateTrayLocation(String blockID, String bedID, String cropName, String variety, Double numTrays, Integer trayType, String soilType, Integer seedsPerCell) {
         return null;
     }
 
-    @Override
-    public List<Object> deleteTrayLocation(String blockID, String bedID, String cropName, String variety) {
-
-        return null;
-    }
 }

@@ -51,7 +51,7 @@ public interface IModel {
      * @param blockID
      * @return
      */
-    List<Object> deleteBlock(String blockID);
+    List<Object> deleteBlock(String blockID) throws SQLException;
 
     /**
      * If a record with this primary key already exists then it updates its values.
@@ -124,7 +124,7 @@ public interface IModel {
      * @param variety
      * @return
      */
-    List<Object> deleteCropLocation(String blockID, String bedID, String cropName, String variety);
+    List<Object> deleteCropLocationTrayLocation(String blockID, String bedID, String cropName, String variety) throws SQLException;
 
 
     /**
@@ -141,17 +141,6 @@ public interface IModel {
      */
     List<Object> insertOrUpdateTrayLocation(String blockID, String bedID, String cropName, String variety,
                                             Double numTrays, Integer trayType, String soilType, Integer seedsPerCell);
-
-    /**
-     *
-     * @param blockID
-     * @param bedID
-     * @param cropName
-     * @param variety
-     * @return
-     */
-    List<Object> deleteTrayLocation(String blockID, String bedID, String cropName, String variety);
-
 
 
 }
