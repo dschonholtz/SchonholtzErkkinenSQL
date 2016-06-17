@@ -14,24 +14,19 @@ public class Model implements IModel{
     private String dburl = "jdbc:mysql://localhost:3306/finalporject";
                                         //I SPELLED IT WRONG WHILE BUILDING THE DATABASE OK???
     private Connection conn;
+
+
     public Model() {
         data = new ArrayList<>();
     }
 
-    public void connect(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public void connect(String username, String password) throws Exception {
+        this.username = username; this.password = password;
         Properties connectionProps = new Properties();
         connectionProps.put("user", this.username);
         connectionProps.put("password", this.password);
-
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalporject", connectionProps);
-            System.out.println("Connected to database");
-        } catch (Exception e) {
-            System.out.println("ERROR: Could not connect to the database");
-        }
-
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject", this.username, this.password);
+        System.out.println("Connected to database");
     }
 
     @Override
