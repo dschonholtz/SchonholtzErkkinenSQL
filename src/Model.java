@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by dschonholtz on 6/16/2016.
@@ -8,16 +9,31 @@ import java.util.List;
 public class Model implements IModel{
     List<Object> data;
     private String query;
-    final private String username = "root";
-    final private String password = "";
-    final private String dburl = "jdbc:mysql://localhost:3306/finalporject";
+    private String username;
+    private String password;
+    private String dburl = "jdbc:mysql://localhost:3306/finalporject";
                                         //I SPELLED IT WRONG WHILE BUILDING THE DATABASE OK???
-
+    private Connection conn;
     public Model() {
-        query = "";
         data = new ArrayList<>();
     }
 
+    private void connect(String username, String password) {
+        this.username = username;
+        this.password = password;
+        Properties connectionProps = new Properties();
+        connectionProps.put("user", this.username);
+        connectionProps.put("password", this.password);
+
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://"
+                    + "jdbc:mysql://localhost:3306/finalporject", connectionProps);
+            System.out.println("Connected to database");
+        } catch (Exception e) {
+            System.out.println("ERROR: Could not connect to the database");
+        }
+
+    }
 
     @Override
     public List<Object> getHarvestable() {
@@ -27,7 +43,6 @@ public class Model implements IModel{
              ResultSet rs1 = statement.executeQuery(query)) {
             data.clear();
             while(rs1.next()) {
-
 
             }
         } catch(SQLException e) {
@@ -74,7 +89,9 @@ public class Model implements IModel{
     }
 
     @Override
-    public List<Object> deleteBed(String blockID, String bedID) {
+    public List<Object> deleteBed(String blockID, String bedID) throws SQLException  {
+        CallableStatement pstat;
+        pstat = conn.prepareCall("{call track_character(?)}");
         return null;
     }
 
@@ -105,6 +122,7 @@ public class Model implements IModel{
 
     @Override
     public List<Object> deleteTrayLocation(String blockID, String bedID, String cropName, String variety) {
+
         return null;
     }
 }
