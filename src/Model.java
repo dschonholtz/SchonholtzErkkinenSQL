@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by dschonholtz on 6/16/2016.
@@ -15,18 +16,33 @@ public class Model implements IModel{
                                         //I SPELLED IT WRONG WHILE BUILDING THE DATABASE OK???
     private Connection conn;
 
-
-    public Model() {
+  /**
+   * Constructor for the Model.
+   */
+  public Model() {
         data = new ArrayList<>();
     }
 
     public void connect(String username, String password) throws Exception {
-        this.username = username; this.password = password;
+        this.username = username;
+        this.password = password;
         Properties connectionProps = new Properties();
         connectionProps.put("user", this.username);
         connectionProps.put("password", this.password);
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject", this.username, this.password);
-        System.out.println("Connected to database");
+        boolean isConnected = false;
+
+        while (!isConnected) {
+            try {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalporject" +
+                        "?autoReconnect=true&useSSL=false", connectionProps);
+                isConnected = true;
+
+            } catch (Exception e) {
+                System.out.println("ERROR: Could not connect to the database");
+                isConnected = false;
+
+            }
+        }
     }
 
     @Override
