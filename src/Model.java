@@ -30,18 +30,21 @@ public class Model implements IModel{
         connectionProps.put("user", this.username);
         connectionProps.put("password", this.password);
         boolean isConnected = false;
-
+        System.out.println("I made it");
         while (!isConnected) {
-            try {
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalporject" +
-                        "?autoReconnect=true&useSSL=false", connectionProps);
-                isConnected = true;
 
+            try {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject" +
+                        "?autoReconnect=true&useSSL=false", connectionProps);
+
+                isConnected = true;
+              System.out.println("I made iihuyybiubiubiht");
             } catch (Exception e) {
                 System.out.println("ERROR: Could not connect to the database");
                 isConnected = false;
 
             }
+          System.out.println("I made it");
         }
     }
 
