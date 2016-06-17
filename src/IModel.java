@@ -1,4 +1,5 @@
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -68,7 +69,7 @@ public interface IModel {
      * @param bedID
      * @return
      */
-    List<Object> deleteBed(String blockID, String bedID);
+    List<Object> deleteBed(String blockID, String bedID) throws SQLException;
 
     /**
      *
