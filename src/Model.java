@@ -10,9 +10,9 @@ import java.util.concurrent.ExecutionException;
 public class Model implements IModel{
     List<Object> data;
     private String query;
-    private String username;
-    private String password;
-    private String dburl = "jdbc:mysql://localhost:3306/finalporject";
+    private String username; // TODO REMOVE AND JUST USE CONN
+    private String password; //TODO REMOVE AND JUST USE CONN
+    private String dburl = "jdbc:mysql://localhost:3306/finalproject";
                                         //I SPELLED IT WRONG WHILE BUILDING THE DATABASE OK???
     private Connection conn;
 
@@ -24,28 +24,14 @@ public class Model implements IModel{
     }
 
     public void connect(String username, String password) throws Exception {
+
         this.username = username;
         this.password = password;
         Properties connectionProps = new Properties();
-        connectionProps.put("user", this.username);
-        connectionProps.put("password", this.password);
-        boolean isConnected = false;
-        System.out.println("I made it");
-        while (!isConnected) {
+        connectionProps.put("user", username);
+        connectionProps.put("password", password);
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject", connectionProps);
 
-            try {
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject" +
-                        "?autoReconnect=true&useSSL=false", connectionProps);
-
-                isConnected = true;
-              System.out.println("I made iihuyybiubiubiht");
-            } catch (Exception e) {
-                System.out.println("ERROR: Could not connect to the database");
-                isConnected = false;
-
-            }
-          System.out.println("I made it");
-        }
     }
 
     @Override
