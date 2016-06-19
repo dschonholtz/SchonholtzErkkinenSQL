@@ -44,7 +44,7 @@ public interface IModel {
      * @param notes
      * @return
      */
-    List<Object> insertBlock(String blockID, String notes);
+    List<Object> insertOrUpdateBlock(String blockID, String notes);
 
     /**
      * Deletes the block with this primary key

@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.Objects;
 
 /**
  * Created by Douglas Schonholtz on 6/16/2016.
@@ -23,67 +21,58 @@ import java.util.Objects;
 public class View extends JFrame {
     private Model model;
     final private ConcreteView concreteView;
-    private String username;
-    private String password;
-    private String databaseURL;
 
-    private JLabel headerLabel;
-    private JLabel statusLabel;
-
-    boolean loggedIn;
 
     public View() {
-        loggedIn = false;
         this.concreteView = new ConcreteView();
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.getContentPane().add(concreteView);
         this.pack();
-        prepareGui();
-
     }
 
     public void run() {
         this.repaint();
-        headerLabel.setText("Control in action: JTextField");
 
-        JLabel  namelabel= new JLabel("User ID: ", JLabel.RIGHT);
-        JLabel  passwordLabel = new JLabel("Password: ", JLabel.CENTER);
+        JLabel headerLabel = new JLabel("Stone Beech Farm Database \nBy Douglas Schonholtz and Brian Erkkinen");
+        JLabel statusLabel = new JLabel();
+
+        JLabel namelabel = new JLabel("User ID: ", JLabel.RIGHT);
+        JLabel passwordLabel = new JLabel("Password: ", JLabel.CENTER);
         final JTextField userText = new JTextField(6);
         final JPasswordField passwordText = new JPasswordField(6);
-
         JButton loginButton = new JButton("Login");
+
+        concreteView.add(namelabel);
+        concreteView.add(userText);
+        concreteView.add(headerLabel);
+        concreteView.add(passwordLabel);
+        concreteView.add(passwordText);
+        concreteView.add(loginButton);
+
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String user = userText.getText().toString();
                 String pass = new String(passwordText.getPassword());
                 Model model = new Model();
-                    try {
-                        model.connect(user, pass);
-                        statusLabel.setText("Credentials accepted");
-                    } catch (Exception exception) {
-                        statusLabel.setText("Invalid password or username please try again");
-                    }
+                try {
+                    model.connect(user, pass);
+                    statusLabel.setText("Credentials accepted");
+
+                    concreteView.remove(namelabel);
+                    concreteView.remove(userText);
+                    concreteView.remove(passwordLabel);
+                    concreteView.remove(passwordText);
+                    concreteView.remove(loginButton);
+                    concreteView.remove(headerLabel);
+                    concreteView.setLoggedIn(true);
+                    concreteView.revalidate();
+                    concreteView.repaint();
+                } catch (Exception exception) {
+                    statusLabel.setText("Invalid password or username please try again");
+                }
             }
         });
-
-        concreteView.add(namelabel);
-        concreteView.add(userText);
-        concreteView.add(passwordLabel);
-        concreteView.add(passwordText);
-        concreteView.add(loginButton);
+        concreteView.add(statusLabel);
         this.setVisible(true);
-
-    }
-
-    private void prepareGui() {
-        this.setLayout(new GridLayout(3, 1));
-        headerLabel = new JLabel("", JLabel.CENTER);
-        statusLabel = new JLabel("",JLabel.CENTER);
-
-        statusLabel.setSize(350,100);
-//        ConcreteView.setLayout(new FlowLayout());
-
-        this.add(headerLabel);
-        this.add(statusLabel);
     }
 }
