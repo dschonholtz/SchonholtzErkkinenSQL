@@ -21,22 +21,23 @@ public interface IModel {
     /**
      * Gets all of the harvest ready plants anywhere
      */
-    List<Object> getHarvestable();
+    List<TrayLocation> getHarvestable() throws SQLException;
 
     /**
      * Returns beds with at least feet space in them
      * @param feet - The feet comparison
      * @return - The beds that have at least that many feet
      */
-    List<Object> GetValidBed(int feet);
+    List<Bed> GetValidBed(int feet) throws SQLException;
 
     /**
      *
-     * @param c - The crop type
+     * @param name - The crop name
+     * @param variety - The crop variety
      * @param numPlants - The number of plants that need to be inserted into a bed.
      * @return - All of the beds with crop.feet_between_plants* num plants space left.
      */
-    List<Object> getValdBed(Crop c, int numPlants);
+    List<Bed> getValidBed(String name, String variety, int numPlants) throws SQLException;
 
     /**
      * Inserts a block into the table of blocks
@@ -44,7 +45,7 @@ public interface IModel {
      * @param notes
      * @return
      */
-    List<Object> insertBlock(String blockID, String notes);
+    List<Block> insertOrUpdateBlock(String blockID, String notes) throws SQLException;
 
     /**
      * Deletes the block with this primary key
@@ -61,7 +62,7 @@ public interface IModel {
      * @param bedID - The BedID; must 32 characters or less
      * @return - Returns the updated beds.
      */
-    List<Object> insertOrUpdateBed(String blockID, String bedID, String notes);
+    List<Bed> insertOrUpdateBed(String blockID, String bedID, String notes) throws SQLException;
 
     /**
      * Deletes a bed
@@ -87,10 +88,12 @@ public interface IModel {
      * @param notes
      * @return - Updates the crop table and returns it
      */
-    List<Object> insertOrUpdateCrop(String cropName, String variety, String seed_source, Integer num_seeds,
-                                          Double germination_yield_proj, Double germination_yield_act,
-                                          Double feet_between_plants, String part_num, Double cost, Integer qty,
-                                          String packType, String notes);
+    List<Crop> insertOrUpdateCrop(String cropName, String variety,
+                                    String seed_source, Integer num_seeds,
+                                    Double germination_yield_proj, Double germination_yield_act,
+                                    Double feet_between_plants, String part_num,
+                                    Double cost, Integer qty,
+                                    String packType, String notes) throws SQLException;
 
     /**
      * Deletes a crop
@@ -98,7 +101,7 @@ public interface IModel {
      * @param variety
      * @return
      */
-    List<Object> deleteCrop(String cropName, String variety);
+    List<Object> deleteCrop(String cropName, String variety) throws SQLException;
 
     /**
      *
@@ -112,9 +115,10 @@ public interface IModel {
      * @param notes
      * @return - Updates the cropLocation table and returns it.
      */
-    List<Object> insertOrUpdateCropLocation(String blockID, String bedID, String cropName, String variety,
-                                                  Integer numPlants, Date projectedHarvest, Date actualHarvest,
-                                                  String notes);
+    List<CropLocation> insertOrUpdateCropLocation(String blockID, String bedID,
+                                            String cropName, String variety,
+                                            Integer numPlants, Date projectedHarvest,
+                                            Date actualHarvest, String notes) throws SQLException;
 
     /**
      * Delete croplocation
@@ -124,7 +128,8 @@ public interface IModel {
      * @param variety
      * @return
      */
-    List<Object> deleteCropLocationTrayLocation(String blockID, String bedID, String cropName, String variety) throws SQLException;
+    List<Object> deleteCropLocationTrayLocation(String blockID, String bedID,
+                                                String cropName, String variety) throws SQLException;
 
 
     /**
@@ -139,8 +144,10 @@ public interface IModel {
      * @param seedsPerCell
      * @return
      */
-    List<Object> insertOrUpdateTrayLocation(String blockID, String bedID, String cropName, String variety,
-                                            Double numTrays, Integer trayType, String soilType, Integer seedsPerCell);
+    List<TrayLocation> insertOrUpdateTrayLocation(String blockID, String bedID,
+                                            String cropName, String variety,
+                                            Double numTrays, Integer trayType,
+                                            String soilType, Integer seedsPerCell) throws SQLException;
 
 
 }

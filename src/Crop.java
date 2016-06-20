@@ -43,7 +43,7 @@ public class Crop {
         if(cropName == null || cropName.length() > 128) {
             throw new IllegalArgumentException("CropName must be valid");
         }
-        if(variety != null || variety.length() > 128) {
+        if(variety == null || variety.length() > 128) {
             throw new IllegalArgumentException("Variety must be valid");
         }
         this.cropName = cropName;
@@ -153,6 +153,10 @@ public class Crop {
     }
 
     public void setNotes(String notes) {
+        if(notes == null) {
+            this.notes = null;
+            return;
+        }
         if(notes.length() > 512) {
             throw new IllegalArgumentException("Notes must be less than 512 characters");
         }

@@ -70,6 +70,10 @@ public class Bed {
      * @param notes
      */
     public void setNotes(String notes) {
+        if (notes == null) {
+            this.notes = null;
+            return;
+        }
         if(notes.length() > 512) {
             throw new IllegalArgumentException("Notes must be less than 512 characters");
         }

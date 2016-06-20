@@ -44,7 +44,11 @@ public class Block {
      * @param notes
      */
     public void setNotes(String notes) {
-        if(notes.length() > 512) {
+        if (notes == null) {
+            this.notes = null;
+            return;
+        }
+        else if(notes.length() > 512) {
             throw new IllegalArgumentException("Notes must be less than 512 characters");
         }
         this.notes = notes;
