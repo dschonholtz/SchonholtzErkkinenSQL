@@ -27,6 +27,7 @@ public class View extends JFrame {
 
 
     public View() {
+        model = new Model();
         this.concreteView = new ConcreteView();
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.getContentPane().add(concreteView);
@@ -54,7 +55,6 @@ public class View extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String user = userText.getText().toString();
                 String pass = new String(passwordText.getPassword());
-                Model model = new Model();
                 try {
                     model.connect(user, pass);
                     statusLabel.setText("Credentials accepted");
@@ -161,16 +161,25 @@ public class View extends JFrame {
     }
 
     private void getBlocks(int buttonx, int buttony, int buttonWidth, int buttonHeight) {
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
+
         JButton addBlockButton = new JButton("Get Blocks");
         addBlockButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
         concreteView.add(addBlockButton);
         addBlockButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    model.getBlocks();
+                    errorLabel.setText("");
+                } catch (SQLException e1) {
+                    errorLabel.setText("Invalid field");
+                }
             }
         });
-
     }
 
     private void insertOrUpdateBlock(int buttonx, int buttony, int buttonWidth, int buttonHeight) {
@@ -267,7 +276,12 @@ public class View extends JFrame {
         deleteBlockButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    model.getBedsInBlock(blockID.getText().toString());
+                    errorLabel.setText("");
+                } catch (SQLException e1) {
+                    errorLabel.setText("Invalid Field");
+                }
             }
         });
     }
@@ -293,16 +307,16 @@ public class View extends JFrame {
 
         JLabel bedNoteLabel = new JLabel("Bed Notes");
         bedNoteLabel.setForeground(Color.white);
-        bedNoteLabel.setBounds(buttonx, buttony + buttonHeight * 3, buttonWidth, buttonHeight);
+        bedNoteLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
         concreteView.add(bedNoteLabel);
 
         JTextField notes = new JTextField(6);
-        notes.setBounds(buttonx, buttony + buttonHeight * 4, buttonWidth, buttonHeight);
+        notes.setBounds(buttonx, buttony + buttonHeight * 6, buttonWidth, buttonHeight);
         concreteView.add(notes);
 
         JLabel errorLabel = new JLabel("");
         errorLabel.setForeground(Color.red);
-        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 7, buttonWidth, buttonHeight);
         concreteView.add(errorLabel);
 
         JButton insertBedButton = new JButton("Add or Update Bed");
@@ -311,7 +325,13 @@ public class View extends JFrame {
         insertBedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    model.insertOrUpdateBed(blockID.getText().toString(), bedID.getText().toString(),
+                            notes.getText().toString());
+                    errorLabel.setText("");
+                } catch (SQLException e1) {
+                    errorLabel.setText("Invalid Field");
+                }
             }
         });
     }
@@ -346,7 +366,12 @@ public class View extends JFrame {
         deleteBedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    model.deleteBed(blockID.getText().toString(), bedID.getText().toString());
+                    errorLabel.setText("");
+                } catch (SQLException e1) {
+                    errorLabel.setText("Invalid Field");
+                }
             }
         });
     }
@@ -381,7 +406,12 @@ public class View extends JFrame {
         deleteBedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    model.getCropsInBed(blockID.getText().toString(), bedID.getText().toString());
+                    errorLabel.setText("");
+                } catch (SQLException e1) {
+                    errorLabel.setText("Invalid Field");
+                }
             }
         });
     }
@@ -516,7 +546,7 @@ public class View extends JFrame {
         insertOrUpdateCropButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //TODO HERE IS THE NEXT THING TO DO
             }
         });
     }
