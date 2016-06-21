@@ -21,14 +21,14 @@ public interface IModel {
     /**
      * Gets all of the harvest ready plants anywhere
      */
-    List<TrayLocation> getHarvestable() throws SQLException;
+    List<FarmOBJ> getHarvestable() throws SQLException;
 
     /**
      * Returns beds with at least feet space in them
      * @param feet - The feet comparison
      * @return - The beds that have at least that many feet
      */
-    List<Bed> GetValidBed(int feet) throws SQLException;
+    List<FarmOBJ> GetValidBed(int feet) throws SQLException;
 
     /**
      * This
@@ -38,36 +38,36 @@ public interface IModel {
      * @param numPlants - The number of plants that need to be inserted into a bed.
      * @return - All of the beds with crop.feet_between_plants* num plants space left.
      */
-    List<Bed> getValidBed(String name, String variety, int numPlants) throws SQLException;
+    List<FarmOBJ> getValidBed(String name, String variety, int numPlants) throws SQLException;
 
   /**
    *
    */
-    List<Block> getBlocks() throws SQLException;
+    List<FarmOBJ> getBlocks() throws SQLException;
 
   /**
    *
    */
-    List<Bed> getBedsInBlock(String block_id) throws SQLException;
+    List<FarmOBJ> getBedsInBlock(String block_id) throws SQLException;
 
     /**
      *
      */
-    List<Crop> getCropsInBed(String bed_id, String block_id) throws SQLException;
+    List<FarmOBJ> getCropsInBed(String bed_id, String block_id) throws SQLException;
     /**
      * Inserts a block into the table of blocks
      * @param blockID
      * @param notes
      * @return
      */
-    List<Block> insertOrUpdateBlock(String blockID, String notes) throws SQLException;
+    List<FarmOBJ> insertOrUpdateBlock(String blockID, String notes) throws SQLException;
 
     /**
      * Deletes the block with this primary key
      * @param blockID
      * @return
      */
-    List<Object> deleteBlock(String blockID) throws SQLException;
+    List<FarmOBJ> deleteBlock(String blockID) throws SQLException;
 
     /**
      * If a record with this primary key already exists then it updates its values.
@@ -77,7 +77,7 @@ public interface IModel {
      * @param bedID - The BedID; must 32 characters or less
      * @return - Returns the updated beds.
      */
-    List<Bed> insertOrUpdateBed(String blockID, String bedID, String notes) throws SQLException;
+    List<FarmOBJ> insertOrUpdateBed(String blockID, String bedID, String notes) throws SQLException;
 
     /**
      * Deletes a bed
@@ -85,7 +85,7 @@ public interface IModel {
      * @param bedID
      * @return
      */
-    List<Object> deleteBed(String blockID, String bedID) throws SQLException;
+    List<FarmOBJ> deleteBed(String blockID, String bedID) throws SQLException;
 
     /**
      *
@@ -103,7 +103,7 @@ public interface IModel {
      * @param notes
      * @return - Updates the crop table and returns it
      */
-    List<Crop> insertOrUpdateCrop(String cropName, String variety,
+    List<FarmOBJ> insertOrUpdateCrop(String cropName, String variety,
                                     String seed_source, Integer num_seeds,
                                     Double germination_yield_proj, Double germination_yield_act,
                                     Double feet_between_plants, String part_num,
@@ -116,7 +116,7 @@ public interface IModel {
      * @param variety
      * @return
      */
-    List<Object> deleteCrop(String cropName, String variety) throws SQLException;
+    List<FarmOBJ> deleteCrop(String cropName, String variety) throws SQLException;
 
     /**
      *
@@ -130,7 +130,7 @@ public interface IModel {
      * @param notes
      * @return - Updates the cropLocation table and returns it.
      */
-    List<CropLocation> insertOrUpdateCropLocation(String blockID, String bedID,
+    List<FarmOBJ> insertOrUpdateCropLocation(String blockID, String bedID,
                                             String cropName, String variety,
                                             Integer numPlants, Date projectedHarvest,
                                             Date actualHarvest, String notes) throws SQLException;
@@ -143,7 +143,7 @@ public interface IModel {
      * @param variety
      * @return
      */
-    List<Object> deleteCropLocationTrayLocation(String blockID, String bedID,
+    List<FarmOBJ> deleteCropLocationTrayLocation(String blockID, String bedID,
                                                 String cropName, String variety) throws SQLException;
 
 
@@ -159,7 +159,7 @@ public interface IModel {
      * @param seedsPerCell
      * @return
      */
-    List<TrayLocation> insertOrUpdateTrayLocation(String blockID, String bedID,
+    List<FarmOBJ> insertOrUpdateTrayLocation(String blockID, String bedID,
                                             String cropName, String variety,
                                             Double numTrays, Integer trayType,
                                             String soilType, Integer seedsPerCell) throws SQLException;

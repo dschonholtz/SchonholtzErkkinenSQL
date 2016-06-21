@@ -1,9 +1,10 @@
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  * Created by Douglas Schonholtz on 6/16/2016.
  */
-public class CropLocation {
+public class CropLocation implements FarmOBJ {
 
     private String blockID;// CHAR(2),
     private String bedID;// VARCHAR(32),
@@ -131,5 +132,25 @@ public class CropLocation {
             throw new IllegalArgumentException("notes cannot be larger than 512 characters");
         }
         this.notes = notes;
+    }
+
+    @Override
+    public String getTypes() {
+        return "Block ID, Bed ID, Crop Name, Variety, Number of Plants, " +
+                "Projected Harvest, Actual Harvest, Notes";
+    }
+
+    @Override
+    public ArrayList getValues() {
+        ArrayList stuff = new ArrayList();
+        stuff.add(blockID);
+        stuff.add(bedID);
+        stuff.add(cropName);
+        stuff.add(variety);
+        stuff.add(numPlants);
+        stuff.add(projectedHarvest);
+        stuff.add(actualHarvest);
+        stuff.add(notes);
+        return stuff;
     }
 }

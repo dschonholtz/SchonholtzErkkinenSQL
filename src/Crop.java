@@ -1,7 +1,9 @@
+import java.util.ArrayList;
+
 /**
  * Created by Douglas Schonholtz on 6/16/2016.
  */
-public class Crop {
+public class Crop implements FarmOBJ{
     /**
      * The comments after these variables are their restrictions in SQL these same restrictions should be enforced in
      * java as not to send bad data to mySQL
@@ -54,26 +56,6 @@ public class Crop {
         throw new IllegalArgumentException("Crops need to have crop_name, and Variety");
     }
 
-    public String getCropName() {
-        return cropName;
-    }
-
-    public void setCropName(String cropName) {
-        this.cropName = cropName;
-    }
-
-    public String getVariety() {
-        return variety;
-    }
-
-    public void setVariety(String variety) {
-        this.variety = variety;
-    }
-
-    public String getSeed_source() {
-        return seed_source;
-    }
-
     public void setSeed_source(String seed_source) {
         if(seed_source.length() > 256) {
             throw new IllegalArgumentException("Seed source must be less than 256 characters");
@@ -81,41 +63,24 @@ public class Crop {
         this.seed_source = seed_source;
     }
 
-    public Integer getNum_seeds() {
-        return num_seeds;
-    }
 
     public void setNum_seeds(Integer num_seeds) {
         this.num_seeds = num_seeds;
-    }
-
-    public double getGermination_yield_proj() {
-        return germination_yield_proj;
     }
 
     public void setGermination_yield_proj(double germination_yield_proj) {
         this.germination_yield_proj = germination_yield_proj;
     }
 
-    public double getGermination_yield_act() {
-        return germination_yield_act;
-    }
 
     public void setGermination_yield_act(double germination_yield_act) {
         this.germination_yield_act = germination_yield_act;
-    }
-
-    public double getFeet_between_plants() {
-        return feet_between_plants;
     }
 
     public void setFeet_between_plants(double feet_between_plants) {
         this.feet_between_plants = feet_between_plants;
     }
 
-    public String getPart_num() {
-        return part_num;
-    }
 
     public void setPart_num(String part_num) {
         if(part_num.length() > 256) {
@@ -124,33 +89,21 @@ public class Crop {
         this.part_num = part_num;
     }
 
-    public double getCost() {
-        return cost;
-    }
 
     public void setCost(double cost) {
         this.cost = cost;
     }
 
-    public int getQty() {
-        return qty;
-    }
 
     public void setQty(int qty) {
         this.qty = qty;
     }
 
-    public String getPackType() {
-        return packType;
-    }
 
     public void setPackType(String packType) {
         this.packType = packType;
     }
 
-    public String getNotes() {
-        return notes;
-    }
 
     public void setNotes(String notes) {
         if(notes == null) {
@@ -161,6 +114,31 @@ public class Crop {
             throw new IllegalArgumentException("Notes must be less than 512 characters");
         }
         this.notes = notes;
+    }
+
+    @Override
+    public String getTypes() {
+        return "Crop Name, Variety, Seed Source, Number of Seeds, Proj. Germination Yield, " +
+                "Actual Germination Yield, Feet Between Plants, Part Num, Cost, " +
+                "Quantity, Pack Type, Notes";
+    }
+
+    @Override
+    public ArrayList getValues() {
+        ArrayList stuff = new ArrayList();
+        stuff.add(cropName);
+        stuff.add(variety);
+        stuff.add(seed_source);
+        stuff.add(num_seeds);
+        stuff.add(germination_yield_proj);
+        stuff.add(germination_yield_act);
+        stuff.add(feet_between_plants);
+        stuff.add(part_num);
+        stuff.add(cost);
+        stuff.add(qty);
+        stuff.add(packType);
+        stuff.add(notes);
+        return stuff;
     }
 
 

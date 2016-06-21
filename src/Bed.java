@@ -1,8 +1,10 @@
+import java.util.ArrayList;
+
 /**
  * Created by Douglas Schonholt on 6/16/2016.
  * The file structure for Beds.
  */
-public class Bed {
+public class Bed implements FarmOBJ{
     String blockID;
     String bedID;
     String notes;
@@ -16,58 +18,12 @@ public class Bed {
         this.blockID = blockID;
         this.bedID = bedID;
         this.notes = null;
-
     }
 
-    /**
-     * Use for printing in gui
-     * @return returns the blockid
-     */
-    public String getBlockID() {
-        return blockID;
-    }
-
-    /**
-     * Use for printing in gui
-     * @return returns the bedid
-     */
-    public String getBedID() {
-        return bedID;
-    }
-
-    /**
-     * Use for printing in gui
-     * @return returns the notes
-     */
-    public String getNotes() {
-        return notes;
-    }
-
-    /**
-     * Used for updating
-     * @param blockID - must be 2 characters in length max
-     */
-    public void setBlockID(String blockID) {
-        if(blockID.length() > 2) {
-            throw new IllegalArgumentException("BlockID's must be less than 2 characters");
-        }
-        this.blockID = blockID;
-    }
-
-    /**
-     * Used for updating
-     * @param bedID - must be 32 characters in length at a maximum
-     */
-    public void setBedID(String bedID) {
-        if(bedID.length() > 32) {
-            throw new IllegalArgumentException("BedID's are constrained to 32 characters");
-        }
-        this.bedID = bedID;
-    }
 
     /**
      *
-     * @param notes
+     * @param notes inserts notes into this and checks to make sure its valid
      */
     public void setNotes(String notes) {
         if (notes == null) {
@@ -78,5 +34,21 @@ public class Bed {
             throw new IllegalArgumentException("Notes must be less than 512 characters");
         }
         this.notes = notes;
+    }
+
+
+    @Override
+    public String getTypes() {
+        return "Block ID, Bed ID, Notes";
+    }
+
+    @Override
+    public ArrayList getValues() {
+        ArrayList stuff = new ArrayList();
+        stuff.add(blockID);
+        stuff.add(bedID);
+        stuff.add(notes);
+        return stuff;
+
     }
 }

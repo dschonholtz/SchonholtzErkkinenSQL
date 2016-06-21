@@ -1,7 +1,9 @@
+import java.util.ArrayList;
+
 /**
  * Created by dschonholtz on 6/16/2016.
  */
-public class Block {
+public class Block implements FarmOBJ{
     String blockID;
     String notes;
     public Block(String blockID) {
@@ -10,22 +12,6 @@ public class Block {
         }
         this.blockID = blockID;
         this.notes = null;
-    }
-
-    /**
-     * Use for printing in gui
-     * @return returns the blockid
-     */
-    public String getBlockID() {
-        return blockID;
-    }
-
-    /**
-     * Use for printing in gui
-     * @return returns the notes
-     */
-    public String getNotes() {
-        return notes;
     }
 
     /**
@@ -52,5 +38,18 @@ public class Block {
             throw new IllegalArgumentException("Notes must be less than 512 characters");
         }
         this.notes = notes;
+    }
+
+    @Override
+    public String getTypes() {
+        return "Block ID, Notes";
+    }
+
+    @Override
+    public ArrayList getValues() {
+        ArrayList stuff = new ArrayList();
+        stuff.add(blockID);
+        stuff.add(notes);
+        return stuff;
     }
 }

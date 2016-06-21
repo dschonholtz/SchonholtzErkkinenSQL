@@ -28,7 +28,7 @@ public class View extends JFrame {
 
     public View() {
         model = new Model();
-        this.concreteView = new ConcreteView();
+        this.concreteView = new ConcreteView(model);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.getContentPane().add(concreteView);
         this.pack();
@@ -58,12 +58,13 @@ public class View extends JFrame {
                 try {
                     model.connect(user, pass);
                     statusLabel.setText("Credentials accepted");
-
                     concreteView.remove(namelabel);
                     concreteView.remove(userText);
                     concreteView.remove(passwordLabel);
                     concreteView.remove(passwordText);
                     concreteView.remove(loginButton);
+                    model.getBlocks();
+                    concreteView.setLoggedIn(true);
                     concreteView.revalidate();
                     concreteView.repaint();
                     begin();
@@ -175,6 +176,8 @@ public class View extends JFrame {
                 try {
                     model.getBlocks();
                     errorLabel.setText("");
+                    repaint();
+                    revalidate();
                 } catch (SQLException e1) {
                     errorLabel.setText("Invalid field");
                 }
@@ -214,7 +217,9 @@ public class View extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     errorLabel.setText("");
-                    model.insertOrUpdateBlock(blockID.getText().toString(), notes.getText().toString()); //TODO DOESN"T WORK NULL POINTER
+                    model.insertOrUpdateBlock(blockID.getText().toString(), notes.getText().toString());
+                    repaint();
+                    revalidate();
                 } catch(SQLException se) {
                     errorLabel.setText("Invalid Field");
                 }
@@ -247,6 +252,8 @@ public class View extends JFrame {
                 try {
                     errorLabel.setText("");
                     model.deleteBlock(blockID.getText());
+                    repaint();
+                    revalidate();
                 } catch(SQLException se) {
                     errorLabel.setText("Invalid Field");
                 }
@@ -279,6 +286,8 @@ public class View extends JFrame {
                 try {
                     model.getBedsInBlock(blockID.getText().toString());
                     errorLabel.setText("");
+                    repaint();
+                    revalidate();
                 } catch (SQLException e1) {
                     errorLabel.setText("Invalid Field");
                 }
@@ -329,6 +338,8 @@ public class View extends JFrame {
                     model.insertOrUpdateBed(blockID.getText().toString(), bedID.getText().toString(),
                             notes.getText().toString());
                     errorLabel.setText("");
+                    repaint();
+                    revalidate();
                 } catch (SQLException e1) {
                     errorLabel.setText("Invalid Field");
                 }
@@ -369,6 +380,8 @@ public class View extends JFrame {
                 try {
                     model.deleteBed(blockID.getText().toString(), bedID.getText().toString());
                     errorLabel.setText("");
+                    repaint();
+                    revalidate();
                 } catch (SQLException e1) {
                     errorLabel.setText("Invalid Field");
                 }
@@ -409,6 +422,8 @@ public class View extends JFrame {
                 try {
                     model.getCropsInBed(blockID.getText().toString(), bedID.getText().toString());
                     errorLabel.setText("");
+                    repaint();
+                    revalidate();
                 } catch (SQLException e1) {
                     errorLabel.setText("Invalid Field");
                 }
@@ -537,7 +552,7 @@ public class View extends JFrame {
 
         JLabel errorLabel = new JLabel("");
         errorLabel.setForeground(Color.red);
-        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 25, buttonWidth, buttonHeight);
         concreteView.add(errorLabel);
 
         JButton insertOrUpdateCropButton = new JButton("Add/Update Crop");
@@ -546,7 +561,18 @@ public class View extends JFrame {
         insertOrUpdateCropButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO HERE IS THE NEXT THING TO DO
+                try {
+                    model.insertOrUpdateCrop(cropName.getText(), varietyField.getText(), seedSource.getText(),
+                            Integer.parseInt(numSeeds.getText()), Double.parseDouble(germinationProj.getText()),
+                            Double.parseDouble(germinationAct.getText()), Double.parseDouble(feetBetweenPlants.getText()),
+                            partNum.getText(), Double.parseDouble(cost.getText()), Integer.parseInt(qty.getText()),
+                            packType.getText(), cropNotes.getText());
+                    errorLabel.setText("");
+                    repaint();
+                    revalidate();
+                } catch (SQLException e1) {
+                    errorLabel.setText("Invalid field");
+                }
             }
         });
     }
@@ -571,13 +597,25 @@ public class View extends JFrame {
         varietyField.setBounds(buttonx, buttony + buttonHeight * 4, buttonWidth, buttonHeight);
         concreteView.add(varietyField);
 
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 25, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
+
         JButton deleteCropButton = new JButton("Delete Crop");
         deleteCropButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
         concreteView.add(deleteCropButton);
         deleteCropButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    model.deleteCrop(cropName.getText(), varietyField.getText());
+                    errorLabel.setText("");
+                    repaint();
+                    revalidate();
+                } catch (SQLException e1) {
+                    errorLabel.setText("Invalid Field");
+                }
             }
         });
     }
@@ -668,8 +706,8 @@ public class View extends JFrame {
         concreteView.add(projectedHarvestYearLabel);
 
         JTextField projectedHarvestYearField = new JTextField(6);
-        projectedHarvestYearField.setBounds(buttonx + buttonWidth / 3 * 2, buttony + buttonHeight * 13, // TODO FIELD NOT BEING DRAWN FOR UNKNOWN REASON
-                buttonWidth / 2, buttonHeight);
+        projectedHarvestYearField.setBounds(buttonx + buttonWidth / 3 * 2, buttony + buttonHeight * 13,
+                buttonWidth / 2 - 20, buttonHeight);
         concreteView.add(projectedHarvestYearField);
 
 
@@ -705,9 +743,9 @@ public class View extends JFrame {
         concreteView.add(actualHarvestYearLabel);
 
         JTextField actualHarvestYearField = new JTextField(6);
-        projectedHarvestYearField.setBounds(buttonx + buttonWidth / 3 * 2, buttony + buttonHeight * 16,
-                buttonWidth / 2, buttonHeight);
-        concreteView.add(projectedHarvestYearField);
+        actualHarvestYearField.setBounds(buttonx + buttonWidth / 3 * 2, buttony + buttonHeight * 16,
+                buttonWidth / 2 - 20, buttonHeight);
+        concreteView.add(actualHarvestYearField);
 
 
         JLabel cropLocationNoteLabel = new JLabel("Crop Location Notes");
@@ -730,7 +768,20 @@ public class View extends JFrame {
         insertOrUpdateCropLocationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                Date projectedDate = Date.valueOf(projectedHarvestYearField.getText() + ":" +
+                        projectedHarvestMonthField.getText() + ":" + projectedHarvestDayField);
+                Date actualDate = Date.valueOf(actualHarvestYearField.getText() + ":" +
+                        actualHarvestMonthField.getText() + ":" + actualHarvestDayField.getText());
+                try {
+                    model.insertOrUpdateCropLocation(blockID.getText(), bedID.getText(), cropName.getText(),
+                            varietyField.getText(), Integer.parseInt(numPlants.getText()), projectedDate, actualDate,
+                            cropLocationNotes.getText());
+                    repaint();
+                    revalidate();
+                    errorLabel.setText("");
+                } catch (SQLException e1) {
+                    errorLabel.setText("Invalid Field");
+                }
             }
         });
     }
@@ -787,17 +838,20 @@ public class View extends JFrame {
         deleteCropLocationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    model.deleteCropLocationTrayLocation(blockID.getText(), bedID.getText(),
+                            cropName.getText(), varietyField.getText());
+                    errorLabel.setText("");
+                    repaint();
+                    revalidate();
+                } catch (SQLException e1) {
+                    errorLabel.setText("Invalid Field");
+                }
             }
         });
     }
 
     private void insertOrUpdateTrayLocation(int buttonx, int buttony, int buttonWidth, int buttonHeight) {
-
-//              String blockID, String bedID,
-//                String cropName, String variety,
-//                Double numTrays, Integer trayType,
-//                String soilType, Integer seedsPerCell
 
         JLabel blockIDLabel = new JLabel("Block ID");
         blockIDLabel.setForeground(Color.white);
@@ -866,14 +920,14 @@ public class View extends JFrame {
         concreteView.add(soilType);
 
 
-        JLabel SeedsPerCellLabel = new JLabel("Seeds Per Cell (Integer)");
-        SeedsPerCellLabel.setForeground(Color.white);
-        SeedsPerCellLabel.setBounds(buttonx, buttony + buttonHeight * 15, buttonWidth, buttonHeight);
-        concreteView.add(SeedsPerCellLabel);
+        JLabel seedsPerCellLabel = new JLabel("Seeds Per Cell (Integer)");
+        seedsPerCellLabel.setForeground(Color.white);
+        seedsPerCellLabel.setBounds(buttonx, buttony + buttonHeight * 15, buttonWidth, buttonHeight);
+        concreteView.add(seedsPerCellLabel);
 
-        JTextField SeedsPerCell = new JTextField(6);
-        SeedsPerCell.setBounds(buttonx, buttony + buttonHeight * 16, buttonWidth, buttonHeight);
-        concreteView.add(SeedsPerCell);
+        JTextField seedsPerCell = new JTextField(6);
+        seedsPerCell.setBounds(buttonx, buttony + buttonHeight * 16, buttonWidth, buttonHeight);
+        concreteView.add(seedsPerCell);
 
 
         JLabel errorLabel = new JLabel("");
@@ -888,19 +942,41 @@ public class View extends JFrame {
         insertOrUpdateTrayLocationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    model.insertOrUpdateTrayLocation(blockID.getText(), bedID.getText(),
+                            cropName.getText(), varietyField.getText(), Double.parseDouble(numTrays.getText()),
+                            Integer.parseInt(trayType.getText()), soilType.getText(),
+                            Integer.parseInt(seedsPerCell.getText()));
+                    errorLabel.setText("");
+                    repaint();
+                    revalidate();
+                } catch (SQLException e1) {
+                    errorLabel.setText("Invalid field");
+                }
             }
         });
     }
 
     private void getHarvestable(int buttonx, int buttony, int buttonWidth, int buttonHeight) {
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
+
         JButton getHarvestableButton = new JButton("Get Harvestable Crops");
         getHarvestableButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
         concreteView.add(getHarvestableButton);
         getHarvestableButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    model.getHarvestable();
+                    errorLabel.setText("");
+                    repaint();
+                    revalidate();
+                } catch (SQLException e1) {
+                    errorLabel.setText("Something went wrong: Contact Douglas");
+                }
             }
         });
     }
@@ -928,7 +1004,13 @@ public class View extends JFrame {
         validBedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    model.GetValidBed(Integer.parseInt(feet.getText()));
+                    repaint();
+                    revalidate();
+                } catch (SQLException e1) {
+                    errorLabel.setText("Field must be int");
+                }
             }
         });
     }
@@ -976,7 +1058,15 @@ public class View extends JFrame {
         insertOrUpdateTrayLocationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    model.getValidBed(cropName.getText(), varietyField.getText(),
+                            Integer.parseInt(numPlantsField.getText()));
+                    errorLabel.setText("");
+                    repaint();
+                    revalidate();
+                } catch (SQLException e1) {
+                    errorLabel.setText("Invalid Field");
+                }
             }
         });
     }
