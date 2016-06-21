@@ -8,11 +8,6 @@ import java.util.Properties;
  */
 public class Model implements IModel{
     List<Object> data;
-    private String query;
-    private String username; // TODO REMOVE AND JUST USE CONN
-    private String password; //TODO REMOVE AND JUST USE CONN
-    private String dburl = "jdbc:mysql://localhost:3306/finalproject";
-                                        //I SPELLED IT WRONG WHILE BUILDING THE DATABASE OK???
     private Connection conn;
 
   /**
@@ -23,9 +18,6 @@ public class Model implements IModel{
     }
 
   public void connect(String username, String password) throws Exception {
-
-      this.username = username;
-      this.password = password;
       Properties connectionProps = new Properties();
       connectionProps.put("user", username);
       connectionProps.put("password", password);

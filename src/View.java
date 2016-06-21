@@ -11,8 +11,8 @@ import java.sql.SQLException;
  * Included buttons being:
  *  -Get/insert/delete Blocks
  *  -Get/insert/delete Beds
- *  -Get/insert/delete Crops
- *  -Get/insert/delete Crop Locations
+ *  -insert/delete Crops
+ *  -insert/delete Crop Locations
  *  -Get/insert/delete BedsInBlock
  *  -Get/insert/delete Crops in Bed
  *  -Show Harvest ready plants
@@ -129,7 +129,7 @@ public class View extends JFrame {
             deleteCropOrTrayLocation(buttonx, buttony, buttonWidth, buttonHeight);
 
             buttonx -= buttonWidth * 3 + 60;
-            buttony = concreteView.getHeight() / 3 * 2;
+            buttony = concreteView.getHeight() / 2;
             getHarvestable(buttonx, buttony, buttonWidth, buttonHeight);
 
             buttonx += buttonWidth + 20;
@@ -137,6 +137,16 @@ public class View extends JFrame {
 
             buttonx += buttonWidth + 20;
             getValidBedPlants(buttonx, buttony, buttonWidth, buttonHeight);
+
+            buttonx -= buttonWidth * 2 + 40;
+            buttony = concreteView.getHeight() / 4 * 3;
+            getBlocks(buttonx, buttony, buttonWidth, buttonHeight);
+
+            buttonx += buttonWidth + 20;
+            getBedsInBlock(buttonx, buttony, buttonWidth, buttonHeight);
+
+            buttonx += buttonWidth + 20;
+            getCropsInBed(buttonx, buttony, buttonWidth, buttonHeight);
 
             revalidate();
             repaint();
@@ -147,6 +157,19 @@ public class View extends JFrame {
             revalidate();
             repaint();
         }
+
+    }
+
+    private void getBlocks(int buttonx, int buttony, int buttonWidth, int buttonHeight) {
+        JButton addBlockButton = new JButton("Get Blocks");
+        addBlockButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
+        concreteView.add(addBlockButton);
+        addBlockButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
     }
 
@@ -222,6 +245,33 @@ public class View extends JFrame {
         });
     }
 
+    private void getBedsInBlock(int buttonx, int buttony, int buttonWidth, int buttonHeight) {
+
+        JLabel blockIDLabel = new JLabel("Block ID");
+        blockIDLabel.setForeground(Color.white);
+        blockIDLabel.setBounds(buttonx, buttony + buttonHeight, buttonWidth, buttonHeight);
+        concreteView.add(blockIDLabel);
+
+        JTextField blockID = new JTextField(6);
+        blockID.setBounds(buttonx, buttony + buttonHeight * 2, buttonWidth, buttonHeight);
+        concreteView.add(blockID);
+
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
+
+        JButton deleteBlockButton = new JButton("Get Blocks in Bed");
+        deleteBlockButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
+        concreteView.add(deleteBlockButton);
+        deleteBlockButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
+
     private void insertOrUpdateBed(int buttonx, int buttony, int buttonWidth, int buttonHeight) {
         JLabel blockIDLabel = new JLabel("Block ID");
         blockIDLabel.setForeground(Color.white);
@@ -291,6 +341,41 @@ public class View extends JFrame {
         concreteView.add(errorLabel);
 
         JButton deleteBedButton = new JButton("Delete Bed");
+        deleteBedButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
+        concreteView.add(deleteBedButton);
+        deleteBedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
+
+    private void getCropsInBed(int buttonx, int buttony, int buttonWidth, int buttonHeight) {
+        JLabel blockIDLabel = new JLabel("Block ID");
+        blockIDLabel.setForeground(Color.white);
+        blockIDLabel.setBounds(buttonx, buttony + buttonHeight, buttonWidth, buttonHeight);
+        concreteView.add(blockIDLabel);
+
+        JTextField blockID = new JTextField(6);
+        blockID.setBounds(buttonx, buttony + buttonHeight * 2, buttonWidth, buttonHeight);
+        concreteView.add(blockID);
+
+        JLabel bedIDLabel = new JLabel("Bed ID");
+        bedIDLabel.setForeground(Color.white);
+        bedIDLabel.setBounds(buttonx, buttony + buttonHeight * 3, buttonWidth, buttonHeight);
+        concreteView.add( bedIDLabel);
+
+        JTextField bedID = new JTextField(6);
+        bedID.setBounds(buttonx, buttony + buttonHeight * 4, buttonWidth, buttonHeight);
+        concreteView.add(bedID);
+
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
+
+        JButton deleteBedButton = new JButton("Get Crops In Bed");
         deleteBedButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
         concreteView.add(deleteBedButton);
         deleteBedButton.addActionListener(new ActionListener() {
@@ -865,5 +950,7 @@ public class View extends JFrame {
             }
         });
     }
+
+
 
 }
