@@ -25,7 +25,7 @@ public class ConcreteView extends JPanel {
         super.paintComponent(g);
         if(buttonsDisplayed) {
             g.setColor(Color.DARK_GRAY);
-            g.fillRect(0, this.getHeight() / 2, this.getWidth(), this.getHeight() / 2);
+            g.fillRect(0, this.getHeight() / 3, this.getWidth(), this.getHeight() / 3 * 2);
         }
     }
 
