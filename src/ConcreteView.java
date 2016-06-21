@@ -1,14 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
+ * This paints everything onto the JPanel itself
  * Created by Douglas Schonholtz on 6/17/2016.
  */
 public class ConcreteView extends JPanel {
-    private Model model;
+    private Model model; // How all data is accessed, modified and stored
     public boolean buttonsDisplayed;
     private boolean loggedIn;
 
@@ -19,9 +18,7 @@ public class ConcreteView extends JPanel {
     }
 
     public ConcreteView() {
-        super();
-        this.model = new Model();
-        this.loggedIn = false;
+        throw new IllegalArgumentException("Concrete View must take a model or it will not work");
     }
 
     @Override
@@ -41,14 +38,6 @@ public class ConcreteView extends JPanel {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
         int height = Toolkit.getDefaultToolkit().getScreenSize().height;
         return new Dimension(width, height);
-    }
-
-    public Model getModel() {
-        return model;
-    }
-
-    public void setModel(Model model) {
-        this.model = model;
     }
 
     /**
@@ -88,6 +77,7 @@ public class ConcreteView extends JPanel {
             yPos += 20;
         }
     }
+
 
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
