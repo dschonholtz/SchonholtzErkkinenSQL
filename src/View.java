@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.sql.SQLException;
 
 /**
  * Created by Douglas Schonholtz on 6/16/2016.
@@ -36,9 +37,7 @@ public class View extends JFrame {
     public void run() {
         this.repaint();
 
-        JLabel headerLabel = new JLabel("Stone Beech Farm Database \nBy Douglas Schonholtz and Brian Erkkinen");
         JLabel statusLabel = new JLabel();
-
         JLabel namelabel = new JLabel("User ID: ", JLabel.RIGHT);
         JLabel passwordLabel = new JLabel("Password: ", JLabel.CENTER);
         final JTextField userText = new JTextField(6);
@@ -47,7 +46,6 @@ public class View extends JFrame {
 
         concreteView.add(namelabel);
         concreteView.add(userText);
-        concreteView.add(headerLabel);
         concreteView.add(passwordLabel);
         concreteView.add(passwordText);
         concreteView.add(loginButton);
@@ -66,7 +64,6 @@ public class View extends JFrame {
                     concreteView.remove(passwordLabel);
                     concreteView.remove(passwordText);
                     concreteView.remove(loginButton);
-                    concreteView.remove(headerLabel);
                     concreteView.revalidate();
                     concreteView.repaint();
                     begin();
@@ -172,13 +169,23 @@ public class View extends JFrame {
         notes.setBounds(buttonx, buttony + buttonHeight * 4, buttonWidth, buttonHeight);
         concreteView.add(notes);
 
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
+
         JButton addBlockButton = new JButton("Add/Update Block");
         addBlockButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
         concreteView.add(addBlockButton);
         addBlockButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    errorLabel.setText("");
+                    model.insertOrUpdateBlock(blockID.getText().toString(), notes.getText().toString()); //TODO DOESN"T WORK NULL POINTER
+                } catch(SQLException se) {
+                    errorLabel.setText("Invalid Field");
+                }
             }
         });
     }
@@ -194,13 +201,23 @@ public class View extends JFrame {
         blockID.setBounds(buttonx, buttony + buttonHeight * 2, buttonWidth, buttonHeight);
         concreteView.add(blockID);
 
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
+
         JButton deleteBlockButton = new JButton("Delete Block");
         deleteBlockButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
         concreteView.add(deleteBlockButton);
         deleteBlockButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    errorLabel.setText("");
+                    model.deleteBlock(blockID.getText());
+                } catch(SQLException se) {
+                    errorLabel.setText("Invalid Field");
+                }
             }
         });
     }
@@ -233,6 +250,10 @@ public class View extends JFrame {
         notes.setBounds(buttonx, buttony + buttonHeight * 4, buttonWidth, buttonHeight);
         concreteView.add(notes);
 
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
 
         JButton insertBedButton = new JButton("Add or Update Bed");
         insertBedButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
@@ -264,6 +285,10 @@ public class View extends JFrame {
         bedID.setBounds(buttonx, buttony + buttonHeight * 4, buttonWidth, buttonHeight);
         concreteView.add(bedID);
 
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
 
         JButton deleteBedButton = new JButton("Delete Bed");
         deleteBedButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
@@ -394,6 +419,11 @@ public class View extends JFrame {
         JTextField cropNotes = new JTextField(6);
         cropNotes.setBounds(buttonx, buttony + buttonHeight * 24, buttonWidth, buttonHeight);
         concreteView.add(cropNotes);
+
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
 
         JButton insertOrUpdateCropButton = new JButton("Add/Update Crop");
         insertOrUpdateCropButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
@@ -574,6 +604,11 @@ public class View extends JFrame {
         cropLocationNotes.setBounds(buttonx, buttony + buttonHeight * 18, buttonWidth, buttonHeight);
         concreteView.add(cropLocationNotes);
 
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 19, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
+
         JButton insertOrUpdateCropLocationButton = new JButton("A/U Crop Location");
         insertOrUpdateCropLocationButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
         concreteView.add(insertOrUpdateCropLocationButton);
@@ -623,6 +658,12 @@ public class View extends JFrame {
         JTextField varietyField = new JTextField(6);
         varietyField.setBounds(buttonx, buttony + buttonHeight * 8, buttonWidth, buttonHeight);
         concreteView.add(varietyField);
+
+
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
 
 
         JButton deleteCropLocationButton = new JButton("Delete Crop Location");
@@ -719,6 +760,13 @@ public class View extends JFrame {
         SeedsPerCell.setBounds(buttonx, buttony + buttonHeight * 16, buttonWidth, buttonHeight);
         concreteView.add(SeedsPerCell);
 
+
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
+
+
         JButton insertOrUpdateTrayLocationButton = new JButton("A/U Tray Location");
         insertOrUpdateTrayLocationButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
         concreteView.add(insertOrUpdateTrayLocationButton);
@@ -751,6 +799,13 @@ public class View extends JFrame {
         JTextField feet = new JTextField(6);
         feet.setBounds(buttonx, buttony + buttonHeight * 2, buttonWidth, buttonHeight);
         concreteView.add(feet);
+
+
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
+
 
         JButton validBedButton = new JButton("Get Valid Bed");
         validBedButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
@@ -792,6 +847,13 @@ public class View extends JFrame {
         JTextField numPlantsField = new JTextField(6);
         numPlantsField.setBounds(buttonx, buttony + buttonHeight * 6, buttonWidth, buttonHeight);
         concreteView.add(numPlantsField);
+
+
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBounds(buttonx, buttony + buttonHeight * 5, buttonWidth, buttonHeight);
+        concreteView.add(errorLabel);
+
 
         JButton insertOrUpdateTrayLocationButton = new JButton("Get Valid Beds");
         insertOrUpdateTrayLocationButton.setBounds(buttonx, buttony, buttonWidth, buttonHeight);
