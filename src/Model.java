@@ -25,6 +25,76 @@ public class Model implements IModel{
 
   }
 
+  /**
+   *
+   */
+  public List<Block> getBlocks() throws SQLException{
+    List<Block> returnList = new ArrayList<>();
+    CallableStatement pstat = conn.prepareCall("{CALL get_blocks()}");
+    pstat.execute();
+
+    while (pstat.getResultSet().next()) {
+      Block block = new Block(pstat.getResultSet().getString("id"));
+      block.setNotes(pstat.getResultSet().getString("notes"));
+      returnList.add(block);
+    }
+
+    pstat.closeOnCompletion();
+    return returnList;
+  }
+
+  /**
+   *
+   */
+  public List<Bed> getBedsInBlock(String block_id) throws SQLException {
+    List<Bed> returnList = new ArrayList<>();
+    CallableStatement pstat = conn.prepareCall("{CALL get_beds_in_block(?)}");
+    pstat.setString(1, block_id);
+    pstat.execute();
+    // create the java statement
+    while (pstat.getResultSet().next()) {
+      Bed bed = new Bed(pstat.getResultSet().getString("blockid"),
+              pstat.getResultSet().getString("bedid"));
+      bed.setNotes(pstat.getResultSet().getString("notes"));
+      returnList.add(bed);
+    }
+    pstat.closeOnCompletion();
+
+    return returnList;
+  }
+
+  /**
+   *
+   */
+  public List<Crop> getCropsInBed(String bed_id, String block_id) throws SQLException {
+    List<Crop> returnList = new ArrayList<>();
+    CallableStatement pstat = conn.prepareCall("{CALL get_crops_in_bed(?, ?)}");
+    pstat.setString(1, bed_id);
+    pstat.setString(2, block_id);
+
+
+    pstat.execute();
+
+
+    while (pstat.getResultSet().next()) {
+      Crop crop = new Crop(pstat.getResultSet().getString("crop_name"),
+              pstat.getResultSet().getString("variety"));
+      crop.setSeed_source(pstat.getResultSet().getString("seed_source"));
+      crop.setNum_seeds(pstat.getResultSet().getInt("num_seeds"));
+      crop.setGermination_yield_proj(pstat.getResultSet().getDouble("germination_yield_proj"));
+      crop.setGermination_yield_act(pstat.getResultSet().getDouble("germination_yield_act"));
+      crop.setFeet_between_plants(pstat.getResultSet().getDouble("feet_between_plants"));
+      crop.setPart_num(pstat.getResultSet().getString("part_num"));
+      crop.setCost(pstat.getResultSet().getDouble("cost"));
+      crop.setQty(pstat.getResultSet().getInt("qty"));
+      crop.setPackType(pstat.getResultSet().getString("pack_type"));
+      crop.setNotes(pstat.getResultSet().getString("notes"));
+      returnList.add(crop);
+    }
+    pstat.closeOnCompletion();
+    return returnList;
+  }
+
     @Override
     public List<TrayLocation> getHarvestable() throws SQLException{
       List<TrayLocation> returnList = new ArrayList<>();

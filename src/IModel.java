@@ -40,6 +40,20 @@ public interface IModel {
      */
     List<Bed> getValidBed(String name, String variety, int numPlants) throws SQLException;
 
+  /**
+   *
+   */
+    List<Block> getBlocks() throws SQLException;
+
+  /**
+   *
+   */
+    List<Bed> getBedsInBlock(String block_id) throws SQLException;
+
+    /**
+     *
+     */
+    List<Crop> getCropsInBed(String bed_id, String block_id) throws SQLException;
     /**
      * Inserts a block into the table of blocks
      * @param blockID
