@@ -887,19 +887,26 @@ public class View extends JFrame {
         insertOrUpdateCropLocationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Date projectedDate = Date.valueOf(projectedHarvestYearField.getText() + "-" +
-                        projectedHarvestMonthField.getText() + "-" + projectedHarvestDayField.getText());
-                Date actualDate = Date.valueOf(actualHarvestYearField.getText() + "-" +
-                        actualHarvestMonthField.getText() + "-" + actualHarvestDayField.getText());         //TODO DATE FIELDS cannot be empty
-
-                Integer numPlantsFinal;
+                Date projectedDate;
+                Date actualDate;
                 try {
-                    numPlantsFinal = Integer.parseInt(numPlants.getText());
-                } catch (NumberFormatException ne) {
-                    numPlantsFinal = null;
-                }
+                    try {
+                        projectedDate = Date.valueOf(projectedHarvestYearField.getText() + "-" +
+                                projectedHarvestMonthField.getText() + "-" + projectedHarvestDayField.getText());
+                        actualDate = Date.valueOf(actualHarvestYearField.getText() + "-" +
+                                actualHarvestMonthField.getText() + "-" + actualHarvestDayField.getText());
+                    }
+                    catch (IllegalArgumentException ie) {
+                        throw new SQLException("Invalid Dates");
+                    }
+                    Integer numPlantsFinal;
+                    try {
+                        numPlantsFinal = Integer.parseInt(numPlants.getText());
+                    } catch (NumberFormatException ne) {
+                        numPlantsFinal = null;
+                    }
 
-                try {
+
                     model.insertOrUpdateCropLocation(blockID.getText(), bedID.getText(), cropName.getText(),
                             varietyField.getText(), numPlantsFinal, projectedDate, actualDate,
                             cropLocationNotes.getText());

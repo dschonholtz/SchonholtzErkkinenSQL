@@ -274,13 +274,13 @@ public class Model implements IModel {
         pstat.setString(2, cropName);
         pstat.setString(3, variety);
         pstat.setString(4, seed_source);
-        pstat.setObject(5, num_seeds);
-        pstat.setObject(6, germination_yield_proj);
-        pstat.setObject(7, germination_yield_act);
-        pstat.setObject(8, feet_between_plants);
+        pstat.setInt(5, num_seeds);
+        pstat.setDouble(6, germination_yield_proj);
+        pstat.setDouble(7, germination_yield_act);
+        pstat.setDouble(8, feet_between_plants);
         pstat.setString(9, part_num);
-        pstat.setObject(10, cost);
-        pstat.setObject(11, qty);
+        pstat.setDouble(10, cost);
+        pstat.setInt(11, qty);
         pstat.setString(12, packType);
         pstat.setString(13, notes);
         String query = "SELECT crop_name, variety FROM crop WHERE crop.variety = \"" + variety + "\"" +
