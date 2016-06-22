@@ -65,7 +65,7 @@ public class View extends JFrame {
                 String pass = new String(passwordText.getPassword());
                 try {
                     model.connect(user, pass);
-                    statusLabel.setText("Credentials accepted");
+                    statusLabel.setText("");
                     concreteView.remove(namelabel);
                     concreteView.remove(userText);
                     concreteView.remove(passwordLabel);
@@ -272,7 +272,7 @@ public class View extends JFrame {
 
         JLabel errorLabel = new JLabel("");
         errorLabel.setForeground(Color.red);
-        errorLabel.setBounds(buttonX, buttonY + buttonHeight * 5, buttonWidth, buttonHeight);
+        errorLabel.setBounds(buttonX, buttonY + buttonHeight * 3, buttonWidth, buttonHeight);
         concreteView.add(errorLabel);
 
         JButton deleteBlockButton = new JButton("Delete Block");
@@ -316,7 +316,7 @@ public class View extends JFrame {
         errorLabel.setBounds(buttonX, buttonY + buttonHeight * 5, buttonWidth, buttonHeight);
         concreteView.add(errorLabel);
 
-        JButton deleteBlockButton = new JButton("Get Blocks in Bed");
+        JButton deleteBlockButton = new JButton("Get Beds in Block");
         deleteBlockButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
         concreteView.add(deleteBlockButton);
         deleteBlockButton.addActionListener(new ActionListener() {
@@ -590,7 +590,7 @@ public class View extends JFrame {
         concreteView.add(cost);
 
 
-        JLabel qtyLabel = new JLabel("Part Number");
+        JLabel qtyLabel = new JLabel("Quantity");
         qtyLabel.setForeground(Color.white);
         qtyLabel.setBounds(buttonX, buttonY + buttonHeight * 19, buttonWidth, buttonHeight);
         concreteView.add(qtyLabel);
@@ -600,7 +600,7 @@ public class View extends JFrame {
         concreteView.add(qty);
 
 
-        JLabel packTypeLabel = new JLabel("Part Number");
+        JLabel packTypeLabel = new JLabel("Pack Type");
         packTypeLabel.setForeground(Color.white);
         packTypeLabel.setBounds(buttonX, buttonY + buttonHeight * 21, buttonWidth, buttonHeight);
         concreteView.add(packTypeLabel);
@@ -609,7 +609,7 @@ public class View extends JFrame {
         packType.setBounds(buttonX, buttonY + buttonHeight * 22, buttonWidth, buttonHeight);
         concreteView.add(packType);
 
-        JLabel cropNoteLabel = new JLabel("crop Notes");
+        JLabel cropNoteLabel = new JLabel("Crop Notes");
         cropNoteLabel.setForeground(Color.white);
         cropNoteLabel.setBounds(buttonX, buttonY + buttonHeight * 23, buttonWidth, buttonHeight);
         concreteView.add(cropNoteLabel);
@@ -630,10 +630,51 @@ public class View extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    Integer numSeedsFinal;
+                    try {
+                        numSeedsFinal = Integer.parseInt(numSeeds.getText());
+                    } catch (NumberFormatException ne) {
+                        numSeedsFinal = null;
+                    }
+
+                    Double germinationProjFinal;
+                    try {
+                        germinationProjFinal = Double.parseDouble(germinationProj.getText());
+                    } catch (NumberFormatException ne) {
+                        germinationProjFinal = null;
+                    }
+
+                    Double germinationActFinal;
+                    try {
+                        germinationActFinal = Double.parseDouble(germinationAct.getText());
+                    } catch (NumberFormatException ne) {
+                        germinationActFinal = null;
+                    }
+
+                    Double feetBetweenPlantsFinal;
+                    try {
+                        feetBetweenPlantsFinal = Double.parseDouble(feetBetweenPlants.getText());
+                    } catch (NumberFormatException ne) {
+                        feetBetweenPlantsFinal = null;
+                    }
+
+                    Double costFinal;
+                    try {
+                        costFinal = Double.parseDouble(cost.getText());
+                    } catch (NumberFormatException ne) {
+                        costFinal = null;
+                    }
+
+                    Integer qtyFinal;
+                    try {
+                        qtyFinal = Integer.parseInt(qty.getText());
+                    } catch (NumberFormatException ne) {
+                        qtyFinal = null;
+                    }
+
                     model.insertOrUpdateCrop(cropName.getText(), varietyField.getText(), seedSource.getText(),
-                            Integer.parseInt(numSeeds.getText()), Double.parseDouble(germinationProj.getText()),
-                            Double.parseDouble(germinationAct.getText()), Double.parseDouble(feetBetweenPlants.getText()),
-                            partNum.getText(), Double.parseDouble(cost.getText()), Integer.parseInt(qty.getText()),
+                            numSeedsFinal, germinationProjFinal, germinationActFinal,
+                            feetBetweenPlantsFinal, partNum.getText(), costFinal, qtyFinal,
                             packType.getText(), cropNotes.getText());
                     errorLabel.setText("");
                     repaint();
@@ -846,13 +887,21 @@ public class View extends JFrame {
         insertOrUpdateCropLocationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Date projectedDate = Date.valueOf(projectedHarvestYearField.getText() + ":" +
-                        projectedHarvestMonthField.getText() + ":" + projectedHarvestDayField);
-                Date actualDate = Date.valueOf(actualHarvestYearField.getText() + ":" +
-                        actualHarvestMonthField.getText() + ":" + actualHarvestDayField.getText());
+                Date projectedDate = Date.valueOf(projectedHarvestYearField.getText() + "-" +
+                        projectedHarvestMonthField.getText() + "-" + projectedHarvestDayField.getText());
+                Date actualDate = Date.valueOf(actualHarvestYearField.getText() + "-" +
+                        actualHarvestMonthField.getText() + "-" + actualHarvestDayField.getText());         //TODO DATE FIELDS cannot be empty
+
+                Integer numPlantsFinal;
+                try {
+                    numPlantsFinal = Integer.parseInt(numPlants.getText());
+                } catch (NumberFormatException ne) {
+                    numPlantsFinal = null;
+                }
+
                 try {
                     model.insertOrUpdateCropLocation(blockID.getText(), bedID.getText(), cropName.getText(),
-                            varietyField.getText(), Integer.parseInt(numPlants.getText()), projectedDate, actualDate,
+                            varietyField.getText(), numPlantsFinal, projectedDate, actualDate,
                             cropLocationNotes.getText());
                     repaint();
                     revalidate();
@@ -927,11 +976,11 @@ public class View extends JFrame {
                     model.deleteCropLocationTrayLocation(blockID.getText(), bedID.getText(),
                             cropName.getText(), varietyField.getText());
                     errorLabel.setText("");
-                    repaint();
-                    revalidate();
                 } catch (SQLException e1) {
                     errorLabel.setText("Invalid Field");
                 }
+                repaint();
+                revalidate();
             }
         });
     }
@@ -1036,10 +1085,46 @@ public class View extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    Double numTraysFinal;
+                    try {
+                        numTraysFinal = Double.parseDouble(numTrays.getText());
+                    } catch(NumberFormatException ne) {
+                        if(numTrays.getText().equals("")) {
+                            numTraysFinal = null;
+                        }
+                        else {
+                            throw new SQLException("Field must be double");
+                        }
+                    }
+
+                    Integer trayTypeFinal;
+                    try {
+                        trayTypeFinal = Integer.parseInt(trayType.getText());
+                    } catch(NumberFormatException ne) {
+                        if(trayType.getText().equals("")) {
+                            trayTypeFinal = null;
+                        }
+                        else {
+                            throw new SQLException("Field must be an int");
+                        }
+                    }
+
+                    Integer seedsPerCellFinal;
+                    try {
+                        seedsPerCellFinal = Integer.parseInt(seedsPerCell.getText());
+                    } catch(NumberFormatException ne) {
+                        if(seedsPerCell.getText().equals("")) {
+                            seedsPerCellFinal = null;
+                        }
+                        else {
+                            throw new SQLException("Field must be an Integer");
+                        }
+                    }
+
                     model.insertOrUpdateTrayLocation(blockID.getText(), bedID.getText(),
-                            cropName.getText(), varietyField.getText(), Double.parseDouble(numTrays.getText()),
-                            Integer.parseInt(trayType.getText()), soilType.getText(),
-                            Integer.parseInt(seedsPerCell.getText()));
+                            cropName.getText(), varietyField.getText(), numTraysFinal,
+                            trayTypeFinal, soilType.getText(),
+                            seedsPerCellFinal);
                     errorLabel.setText("");
                     repaint();
                     revalidate();
@@ -1113,7 +1198,19 @@ public class View extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    model.GetValidBed(Integer.parseInt(feet.getText()));
+                    Integer feetFinal;
+                    try {
+                        feetFinal = Integer.parseInt(feet.getText());
+                    } catch (NumberFormatException ne) {
+                        if(feet.getText().equals("")) {
+                            feetFinal = null;
+                        }
+                        else {
+                            throw new SQLException("Field must be int");
+                        }
+                    }
+
+                    model.GetValidBed(feetFinal);
                     repaint();
                     revalidate();
                 } catch (SQLException e1) {
@@ -1163,7 +1260,7 @@ public class View extends JFrame {
 
         JLabel errorLabel = new JLabel("");
         errorLabel.setForeground(Color.red);
-        errorLabel.setBounds(buttonX, buttonY + buttonHeight * 5, buttonWidth, buttonHeight);
+        errorLabel.setBounds(buttonX, buttonY + buttonHeight * 7, buttonWidth, buttonHeight);
         concreteView.add(errorLabel);
 
 

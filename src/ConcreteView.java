@@ -55,7 +55,7 @@ public class ConcreteView extends JPanel {
                 g.drawString(dataTypes.substring(0,count), xPos, yPos);
                 dataTypes = dataTypes.substring(count + 1);
                 count = -1;
-                xPos += 200;
+                xPos += 150;
             }
             count++;
         }
@@ -66,19 +66,22 @@ public class ConcreteView extends JPanel {
             ArrayList foVals = fo.getValues();
             for(Object f : foVals) {
                 if(f != null) {
-                    g.drawString((String) f, xPos, yPos);
+                    g.drawString(f.toString(), xPos, yPos);
                 }
                 else {
                     g.drawString("null", xPos, yPos);
                 }
-                xPos += 200;
+                xPos += 150;
             }
             xPos = 0;
             yPos += 20;
         }
     }
 
-
+    /**
+     * Sets the loggedIn parameter
+     * @param loggedIn - Shows when connected from the database so when its ok to start trying to draw data.
+     */
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
