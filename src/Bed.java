@@ -5,12 +5,12 @@ import java.util.ArrayList;
  * The file structure for Beds.
  */
 public class Bed implements FarmOBJ{
-    String blockID;
-    String bedID;
-    String notes;
+    private String blockID;
+    private String bedID;
+    private String notes;
     public Bed(String blockID, String bedID) {
-        if(blockID.length() > 2) {
-            throw new IllegalArgumentException("BlockID's are constrained to 2 characters");
+        if(blockID.length() > 2  || blockID.equals("")) {
+            throw new IllegalArgumentException("BlockID's are constrained to 1 or 2 characters");
         }
         if(bedID.length() > 32) {
             throw new IllegalArgumentException("BedID's are constrained to 32 characters");
@@ -26,7 +26,7 @@ public class Bed implements FarmOBJ{
      * @param notes inserts notes into this and checks to make sure its valid
      */
     public void setNotes(String notes) {
-        if (notes == null) {
+        if (notes == null || notes.equals("")) {
             this.notes = null;
             return;
         }
@@ -49,6 +49,18 @@ public class Bed implements FarmOBJ{
         stuff.add(bedID);
         stuff.add(notes);
         return stuff;
-
     }
+
+    public String getBlockID() {
+        return blockID;
+    }
+
+    public String getBedID() {
+        return bedID;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
 }

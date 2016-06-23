@@ -1,4 +1,3 @@
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -31,138 +30,108 @@ public interface IModel {
     List<FarmOBJ> GetValidBed(int feet) throws SQLException;
 
     /**
-     * This
      *
-     * @param name - The crop name
-     * @param variety - The crop variety
-     * @param numPlants - The number of plants that need to be inserted into a bed.
-     * @return - All of the beds with crop.feet_between_plants* num plants space left.
+     * @param crop - The crop that is being checked for
+     * @param numPlants - The number of plants to be inserted on
+     * @return - The list of beds that that number of plants can be inserted into
+     * @throws SQLException
      */
-    List<FarmOBJ> getValidBed(String name, String variety, int numPlants) throws SQLException;
+    List<FarmOBJ> getValidBed(Crop crop, int numPlants) throws SQLException;
 
-  /**
-   *
-   */
+    /**
+     * Returns a list of all of the blocks
+     * @return - THe list of all of the blocks
+     * @throws SQLException
+     */
     List<FarmOBJ> getBlocks() throws SQLException;
 
-  /**
-   *
-   */
-    List<FarmOBJ> getBedsInBlock(String block_id) throws SQLException;
+    /**
+     *
+     * @param block - The block to get beds from
+     * @return - The list of beds
+     * @throws SQLException
+     */
+    List<FarmOBJ> getBedsInBlock(Block block) throws SQLException;
 
     /**
      *
+     * @param bed - The bed to get crops from
+     * @return - The list of crops in the bed
+     * @throws SQLException
      */
-    List<FarmOBJ> getCropsInBed(String bed_id, String block_id) throws SQLException;
-    /**
-     * Inserts a block into the table of blocks
-     * @param blockID
-     * @param notes
-     * @return
-     */
-    List<FarmOBJ> insertOrUpdateBlock(String blockID, String notes) throws SQLException;
-
-    /**
-     * Deletes the block with this primary key
-     * @param blockID
-     * @return
-     */
-    List<FarmOBJ> deleteBlock(String blockID) throws SQLException;
-
-    /**
-     * If a record with this primary key already exists then it updates its values.
-     * Otherwise create the value and add it.
-     * Return the updated table.
-     * @param blockID - The blockID; must be 2 characters or less.
-     * @param bedID - The BedID; must 32 characters or less
-     * @return - Returns the updated beds.
-     */
-    List<FarmOBJ> insertOrUpdateBed(String blockID, String bedID, String notes) throws SQLException;
-
-    /**
-     * Deletes a bed
-     * @param blockID
-     * @param bedID
-     * @return
-     */
-    List<FarmOBJ> deleteBed(String blockID, String bedID) throws SQLException;
+    List<FarmOBJ> getCropsInBed(Bed bed) throws SQLException;
 
     /**
      *
-     * @param cropName
-     * @param variety
-     * @param seed_source
-     * @param num_seeds
-     * @param germination_yield_proj
-     * @param germination_yield_act
-     * @param feet_between_plants
-     * @param part_num
-     * @param cost
-     * @param qty
-     * @param packType
-     * @param notes
-     * @return - Updates the crop table and returns it
+     * @param block - Block to be inserted or updated
+     * @return - The list be inserted after the operation
+     * @throws SQLException
      */
-    List<FarmOBJ> insertOrUpdateCrop(String cropName, String variety,
-                                    String seed_source, Integer num_seeds,
-                                    Double germination_yield_proj, Double germination_yield_act,
-                                    Double feet_between_plants, String part_num,
-                                    Double cost, Integer qty,
-                                    String packType, String notes) throws SQLException;
+    List<FarmOBJ> insertOrUpdateBlock(Block block) throws SQLException;
+
+    /**
+     *
+     * @param block - The block to be deleted
+     * @return - The list be printed after the operation
+     * @throws SQLException
+     */
+    List<FarmOBJ> deleteBlock(Block block) throws SQLException;
+
+    /**
+     * Insert or delete a bed
+     * @param bed - The bed to be inserted
+     * @return - The list to be printed
+     * @throws SQLException
+     */
+    List<FarmOBJ> insertOrUpdateBed(Bed bed) throws SQLException;
+
+    /**
+     *
+     * @param bed - The bed to be inserted
+     * @return - The list to be printed after the operation
+     * @throws SQLException
+     */
+    List<FarmOBJ> deleteBed(Bed bed) throws SQLException;
+
+    /**
+     *
+     * @param crop - crop to be inserted or updated
+     * @return - The list to be printed
+     * @throws SQLException
+     */
+    List<FarmOBJ> insertOrUpdateCrop(Crop crop) throws SQLException;
 
     /**
      * Deletes a crop
-     * @param cropName
-     * @param variety
-     * @return
+     * @param crop - THe crop to be deleted
+     * @return - The fields to be printed afterwards
      */
-    List<FarmOBJ> deleteCrop(String cropName, String variety) throws SQLException;
+    List<FarmOBJ> deleteCrop(Crop crop) throws SQLException;
 
     /**
      *
-     * @param blockID
-     * @param bedID
-     * @param cropName
-     * @param variety
-     * @param numPlants
-     * @param projectedHarvest
-     * @param actualHarvest
-     * @param notes
-     * @return - Updates the cropLocation table and returns it.
+     * @param cropLocation -  The crop location to be inserted
+     * @return - The value to be printed afterwards
+     * @throws SQLException
      */
-    List<FarmOBJ> insertOrUpdateCropLocation(String blockID, String bedID,
-                                            String cropName, String variety,
-                                            Integer numPlants, Date projectedHarvest,
-                                            Date actualHarvest, String notes) throws SQLException;
+    List<FarmOBJ> insertOrUpdateCropLocation(CropLocation cropLocation) throws SQLException;
 
     /**
-     * Delete croplocation
-     * @param blockID
-     * @param bedID
-     * @param cropName
-     * @param variety
-     * @return
+     *
+     * @param cropLocation - The crop location to be inserted
+     * @return - The list to be shown after deleting the the crop location
+     * @throws SQLException
      */
-    List<FarmOBJ> deleteCropLocationTrayLocation(String blockID, String bedID,
-                                                String cropName, String variety) throws SQLException;
+    List<FarmOBJ> deleteCropLocationTrayLocation(CropLocation cropLocation) throws SQLException;
 
 
     /**
-     * In
-     * @param blockID
-     * @param bedID
-     * @param cropName
-     * @param variety
-     * @param numTrays
-     * @param trayType
-     * @param soilType
-     * @param seedsPerCell
-     * @return
+     * Inserts a TrayLocation into the database
+     * @param trayLocation - The tray location to be inserted
+     * @return - The list of data be be printed.
+     * @throws SQLException
      */
-    List<FarmOBJ> insertOrUpdateTrayLocation(String blockID, String bedID,
-                                            String cropName, String variety,
-                                            Double numTrays, Integer trayType,
-                                            String soilType, Integer seedsPerCell) throws SQLException;
+    List<FarmOBJ> insertOrUpdateTrayLocation(TrayLocation trayLocation) throws SQLException;
 
 
 }

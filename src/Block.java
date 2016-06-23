@@ -4,14 +4,51 @@ import java.util.ArrayList;
  * Created by dschonholtz on 6/16/2016.
  */
 public class Block implements FarmOBJ{
-    String blockID;
-    String notes;
+    private String blockID;
+    private String notes;
+
     public Block(String blockID) {
-        if(blockID.length() > 2) {
+        if(blockID.length() > 2 || blockID.equals("")) {
             throw new IllegalArgumentException("BlockID's are constrained to 2 characters");
         }
         this.blockID = blockID;
         this.notes = null;
+    }
+
+    @Override
+    public String getTypes() {
+        return "Block ID, Notes";
+    }
+
+    @Override
+    public ArrayList getValues() {
+        ArrayList values = new ArrayList();
+        values.add(blockID);
+        values.add(notes);
+        return values;
+    }
+
+    public String getBlockID() {
+        return blockID;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    /**
+     *
+     * @param notes
+     */
+    public void setNotes(String notes) {
+        if (notes == null || notes.equals("")) {
+            this.notes = null;
+            return;
+        }
+        if(notes.length() > 512) {
+            throw new IllegalArgumentException("Notes must be less than 512 characters");
+        }
+        this.notes = notes;
     }
 
     /**
@@ -23,33 +60,5 @@ public class Block implements FarmOBJ{
             throw new IllegalArgumentException("BlockID's must be less than 2 characters");
         }
         this.blockID = blockID;
-    }
-
-    /**
-     *
-     * @param notes
-     */
-    public void setNotes(String notes) {
-        if (notes == null) {
-            this.notes = null;
-            return;
-        }
-        else if(notes.length() > 512) {
-            throw new IllegalArgumentException("Notes must be less than 512 characters");
-        }
-        this.notes = notes;
-    }
-
-    @Override
-    public String getTypes() {
-        return "Block ID, Notes";
-    }
-
-    @Override
-    public ArrayList getValues() {
-        ArrayList stuff = new ArrayList();
-        stuff.add(blockID);
-        stuff.add(notes);
-        return stuff;
     }
 }

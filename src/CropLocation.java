@@ -1,4 +1,5 @@
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -67,6 +68,53 @@ public class CropLocation implements FarmOBJ {
         this.notes = notes;
     }
 
+    public CropLocation(String blockID, String bedID, String cropName, String variety, String numPlants,
+                        String projectedHarvestYear, String projectedHarvestMonth, String projectedHarvestDay,
+                        String actualHarvestYear, String actualHarvestMonth, String actualHarvestDay, String notes)
+    throws IllegalArgumentException {
+        if(blockID.length() > 2) {
+            throw new IllegalArgumentException("BlockID's are constrained to 2 or less characters");
+        }
+        if(bedID.length() > 32) {
+            throw new IllegalArgumentException("BedID's are constrained to 32 or less characters");
+        }
+        if(cropName.length() > 128) {
+            throw new IllegalArgumentException("cropName's are constrained to 128 or less characters");
+        }
+        if(variety.length() > 128) {
+            throw new IllegalArgumentException("varieties's are constrained to 128 or less characters");
+        }
+        if(notes != null && notes.length() > 512) {
+            throw new IllegalArgumentException("notes cannot be larger than 512 characters");
+        }
+        Date projectedHarvest1;
+        Date actualHarvest1;
+        try {
+            projectedHarvest1 = Date.valueOf(projectedHarvestYear + "-" +
+                    projectedHarvestMonth + "-" + projectedHarvestDay);
+            actualHarvest1 = Date.valueOf(actualHarvestYear + "-" +
+                    actualHarvestMonth + "-" + actualHarvestDay);
+        }
+        catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid Dates");
+        }
+        Integer numPlantsFinal;
+        try {
+            numPlantsFinal = Integer.parseInt(numPlants);
+        } catch (NumberFormatException ne) {
+            numPlantsFinal = null;
+        }
+
+        this.blockID = blockID;
+        this.bedID = bedID;
+        this.cropName = cropName;
+        this.variety = variety;
+        this.numPlants = numPlantsFinal;
+        this.projectedHarvest = projectedHarvest1;
+        this.actualHarvest = actualHarvest1;
+        this.notes = notes;
+    }
+
     public String getBlockID() {
         return blockID;
     }
@@ -126,6 +174,8 @@ public class CropLocation implements FarmOBJ {
     public String getNotes() {
         return notes;
     }
+
+
 
     public void setNotes(String notes) {
         if(notes != null && notes.length() > 512) {

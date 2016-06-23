@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -50,6 +51,64 @@ public class TrayLocation implements FarmOBJ{
         this.seeds_per_cell = seeds_per_cell;
     }
 
+
+    public TrayLocation(String blockID, String bedID, String cropName, String variety, String num_trays,
+                        String tray_type, String soil_type, String seeds_per_cell) {
+        if(blockID.length() > 2 || bedID.length() > 32 || cropName.length() > 128) {
+            throw new IllegalArgumentException("Tray Location Fields are Incorrect");
+        }
+        this.blockID = blockID;
+        this.bedID = bedID;
+        this.cropName = cropName;
+        this.variety = variety;
+
+        if(soil_type.length() > 128) {
+            throw new IllegalArgumentException("Soil type is too long");
+        }
+
+        Double numTraysFinal;
+        try {
+            numTraysFinal = Double.parseDouble(num_trays);
+        } catch(NumberFormatException ne) {
+            if(num_trays.equals("")) {
+                numTraysFinal = null;
+            }
+            else {
+                throw new IllegalArgumentException("Field must be double");
+            }
+        }
+
+        Integer trayTypeFinal;
+        try {
+            trayTypeFinal = Integer.parseInt(tray_type);
+        } catch(NumberFormatException ne) {
+            if(tray_type.equals("")) {
+                trayTypeFinal = null;
+            }
+            else {
+                throw new IllegalArgumentException("Field must be an int");
+            }
+        }
+
+        Integer seedsPerCellFinal;
+        try {
+            seedsPerCellFinal = Integer.parseInt(seeds_per_cell);
+        } catch(NumberFormatException ne) {
+            if(seeds_per_cell.equals("")) {
+                seedsPerCellFinal = null;
+            }
+            else {
+                throw new IllegalArgumentException("Field must be an Integer");
+            }
+        }
+
+        this.num_trays = numTraysFinal;
+        this.tray_type = trayTypeFinal;
+        this.soil_type = soil_type;
+        this.seeds_per_cell = seedsPerCellFinal;
+    }
+
+
     public String getBlockID() {
         return blockID;
     }
@@ -80,6 +139,38 @@ public class TrayLocation implements FarmOBJ{
 
     public Integer getSeeds_per_cell() {
         return seeds_per_cell;
+    }
+
+    public void setBlockID(String blockID) {
+        this.blockID = blockID;
+    }
+
+    public void setBedID(String bedID) {
+        this.bedID = bedID;
+    }
+
+    public void setCropName(String cropName) {
+        this.cropName = cropName;
+    }
+
+    public void setVariety(String variety) {
+        this.variety = variety;
+    }
+
+    public void setNum_trays(Double num_trays) {
+        this.num_trays = num_trays;
+    }
+
+    public void setTray_type(Integer tray_type) {
+        this.tray_type = tray_type;
+    }
+
+    public void setSoil_type(String soil_type) {
+        this.soil_type = soil_type;
+    }
+
+    public void setSeeds_per_cell(Integer seeds_per_cell) {
+        this.seeds_per_cell = seeds_per_cell;
     }
 
     @Override

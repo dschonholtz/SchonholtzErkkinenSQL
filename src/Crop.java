@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +28,23 @@ public class Crop implements FarmOBJ{
     public Crop(String cropName, String variety, String seed_source, Integer num_seeds, Double germination_yield_proj,
                 Double germination_yield_act, Double feet_between_plants, String part_num, Double cost,
                 Integer qty, String packType, String notes) {
+
+        if(cropName == null || cropName.length() > 128 || cropName.equals("")) {
+            throw new IllegalArgumentException("CropName must be valid");
+        }
+        if(variety == null || variety.length() > 128 || variety.equals("")) {
+            throw new IllegalArgumentException("Variety must be valid");
+        }
+        if(feet_between_plants <= 0) {
+            throw new IllegalArgumentException("Feet Between plants must be valid");
+        }
+        if(germination_yield_act > 1 || germination_yield_act < 0) {
+            throw new IllegalArgumentException("Germination yields must be valid");
+        }
+        if(germination_yield_proj > 1 || germination_yield_act < 0) {
+            throw new IllegalArgumentException("Germination yields must be valid");
+        }
+
         this.cropName = cropName;
         this.variety = variety;
         this.num_seeds = num_seeds;
@@ -41,11 +59,107 @@ public class Crop implements FarmOBJ{
         this.notes = notes;
     }
 
-    public Crop(String cropName, String variety) {
-        if(cropName == null || cropName.length() > 128) {
+
+    public Crop(String cropName, String variety, String seed_source, String num_seeds, String germination_yield_proj,
+                String germination_yield_act, String feet_between_plants, String part_num, String cost,
+                String qty, String packType, String notes) throws IllegalArgumentException {
+                    Integer numSeedsFinal;
+                    try {
+                        numSeedsFinal = Integer.parseInt(num_seeds);
+                    } catch (NumberFormatException ne) {
+                        if(num_seeds.equals("")) {
+                            numSeedsFinal = null;
+                        }
+                        else {
+                            throw new IllegalArgumentException("Number formatted incorrectly");
+                        }
+                    }
+
+                    Double germinationProjFinal;
+                    try {
+                        germinationProjFinal = Double.parseDouble(germination_yield_proj);
+                    } catch (NumberFormatException ne) {
+                        if(germination_yield_proj.equals("")) {
+                            germinationProjFinal = null;
+                        }
+                        else {
+                            throw new IllegalArgumentException("Number formatted incorrectly");
+                        }
+                    }
+
+                    Double germinationActFinal;
+                    try {
+                        germinationActFinal = Double.parseDouble(germination_yield_act);
+                    } catch (NumberFormatException ne) {
+                        if(germination_yield_act.equals("")) {
+                            germinationActFinal = null;
+                        }
+                        else {
+                            throw new IllegalArgumentException("Number formatted incorrectly");
+                        }
+                    }
+
+                    Double feetBetweenPlantsFinal;
+                    try {
+                        feetBetweenPlantsFinal = Double.parseDouble(feet_between_plants);
+                    } catch (NumberFormatException ne) {
+                        if(feet_between_plants.equals("")) {
+                            feetBetweenPlantsFinal = null;
+                        }
+                        else {
+                            throw new IllegalArgumentException("Number formatted incorrectly");
+                        }
+                    }
+
+                    Double costFinal;
+                    try {
+                        costFinal = Double.parseDouble(cost);
+                    } catch (NumberFormatException ne) {
+                        if(cost.equals("")) {
+                            costFinal = null;
+                        }
+                        else {
+                            throw new IllegalArgumentException("Number formatted incorrectly");
+                        }
+                    }
+
+                    Integer qtyFinal;
+                    try {
+                        qtyFinal = Integer.parseInt(qty);
+                    } catch (NumberFormatException ne) {
+                        if(qty.equals("")) {
+                            qtyFinal = null;
+                        }
+                        else {
+                            throw new IllegalArgumentException("Number formatted incorrectly");
+                        }
+                    }
+        if(cropName == null || cropName.length() > 128 || cropName.equals("")) {
             throw new IllegalArgumentException("CropName must be valid");
         }
-        if(variety == null || variety.length() > 128) {
+        if(variety == null || variety.length() > 128 || variety.equals("")) {
+            throw new IllegalArgumentException("Variety must be valid");
+        }
+
+        this.cropName = cropName;
+        this.variety = variety;
+        this.num_seeds = numSeedsFinal;
+        this.germination_yield_proj = germinationProjFinal;
+        this.germination_yield_act = germinationActFinal;
+        this.feet_between_plants = feetBetweenPlantsFinal;
+        this.part_num = part_num;
+        this.cost = costFinal;
+        this.qty = qtyFinal;
+        this.packType = packType;
+        this.seed_source = seed_source;
+        this.notes = notes;
+    }
+
+    public Crop(String cropName, String variety) {
+        if(cropName == null || cropName.length() > 128 || cropName.equals("")) {
+            throw new IllegalArgumentException("CropName must be valid");
+        }
+        if(variety == null || variety.length() > 128 || variety.equals("")) {
             throw new IllegalArgumentException("Variety must be valid");
         }
         this.cropName = cropName;
@@ -141,5 +255,79 @@ public class Crop implements FarmOBJ{
         return stuff;
     }
 
+    public String getCropName() {
+        return cropName;
+    }
 
+    public void setCropName(String cropName) {
+        this.cropName = cropName;
+    }
+
+    public String getVariety() {
+        return variety;
+    }
+
+    public void setVariety(String variety) {
+        this.variety = variety;
+    }
+
+    public String getSeed_source() {
+        return seed_source;
+    }
+
+    public Integer getNum_seeds() {
+        return num_seeds;
+    }
+
+    public Double getGermination_yield_proj() {
+        return germination_yield_proj;
+    }
+
+    public void setGermination_yield_proj(Double germination_yield_proj) {
+        this.germination_yield_proj = germination_yield_proj;
+    }
+
+    public Double getGermination_yield_act() {
+        return germination_yield_act;
+    }
+
+    public void setGermination_yield_act(Double germination_yield_act) {
+        this.germination_yield_act = germination_yield_act;
+    }
+
+    public Double getFeet_between_plants() {
+        return feet_between_plants;
+    }
+
+    public void setFeet_between_plants(Double feet_between_plants) {
+        this.feet_between_plants = feet_between_plants;
+    }
+
+    public String getPart_num() {
+        return part_num;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+
+    public Integer getQty() {
+        return qty;
+    }
+
+    public void setQty(Integer qty) {
+        this.qty = qty;
+    }
+
+    public String getPackType() {
+        return packType;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
 }
