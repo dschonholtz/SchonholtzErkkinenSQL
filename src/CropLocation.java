@@ -23,16 +23,16 @@ public class CropLocation implements FarmOBJ {
     }
 
     public CropLocation(String blockID, String bedID, String cropName, String variety) {
-        if(blockID.length() > 2) {
-            throw new IllegalArgumentException("BlockID's are constrained to 2 or less characters");
+        if(blockID.length() > 2 || blockID.equals("")) {
+            throw new IllegalArgumentException("BlockID's are constrained to 1 or 2 characters");
         }
-        if(bedID.length() > 32) {
+        if(bedID.length() > 32 || bedID.equals("")) {
             throw new IllegalArgumentException("BedID's are constrained to 32 or less characters");
         }
-        if(cropName.length() > 128) {
+        if(cropName.length() > 128 || cropName.equals("")) {
             throw new IllegalArgumentException("cropName's are constrained to 128 or less characters");
         }
-        if(variety.length() > 128) {
+        if(variety.length() > 128 || variety.equals("")) {
             throw new IllegalArgumentException("varieties's are constrained to 128 or less characters");
         }
         this.blockID = blockID;
@@ -43,16 +43,16 @@ public class CropLocation implements FarmOBJ {
 
     public CropLocation(String blockID, String bedID, String cropName, String variety, Integer numPlants,
                         Date projectedHarvest, Date actualHarvest, String notes) {
-        if(blockID.length() > 2) {
-            throw new IllegalArgumentException("BlockID's are constrained to 2 or less characters");
+        if(blockID.length() > 2 || blockID.equals("")) {
+            throw new IllegalArgumentException("BlockID's are constrained to 1 or 2 characters");
         }
-        if(bedID.length() > 32) {
+        if(bedID.length() > 32 || bedID.equals("")) {
             throw new IllegalArgumentException("BedID's are constrained to 32 or less characters");
         }
-        if(cropName.length() > 128) {
+        if(cropName.length() > 128 || cropName.equals("")) {
             throw new IllegalArgumentException("cropName's are constrained to 128 or less characters");
         }
-        if(variety.length() > 128) {
+        if(variety.length() > 128 || variety.equals("")) {
             throw new IllegalArgumentException("varieties's are constrained to 128 or less characters");
         }
         if(notes != null && notes.length() > 512) {
@@ -72,16 +72,16 @@ public class CropLocation implements FarmOBJ {
                         String projectedHarvestYear, String projectedHarvestMonth, String projectedHarvestDay,
                         String actualHarvestYear, String actualHarvestMonth, String actualHarvestDay, String notes)
     throws IllegalArgumentException {
-        if(blockID.length() > 2) {
-            throw new IllegalArgumentException("BlockID's are constrained to 2 or less characters");
+        if(blockID.length() > 2 || blockID.equals("")) {
+            throw new IllegalArgumentException("BlockID's are constrained to 1 or 2 characters");
         }
-        if(bedID.length() > 32) {
+        if(bedID.length() > 32 || bedID.equals("")) {
             throw new IllegalArgumentException("BedID's are constrained to 32 or less characters");
         }
-        if(cropName.length() > 128) {
+        if(cropName.length() > 128 || cropName.equals("")) {
             throw new IllegalArgumentException("cropName's are constrained to 128 or less characters");
         }
-        if(variety.length() > 128) {
+        if(variety.length() > 128 || variety.equals("")) {
             throw new IllegalArgumentException("varieties's are constrained to 128 or less characters");
         }
         if(notes != null && notes.length() > 512) {
