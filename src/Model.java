@@ -21,7 +21,7 @@ public class Model implements IModel {
         Properties connectionProps = new Properties();
         connectionProps.put("user", username);
         connectionProps.put("password", password);
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject", connectionProps);
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/farmville", connectionProps);
 
     }
 
@@ -32,8 +32,8 @@ public class Model implements IModel {
         pstat.execute();
 
         while (pstat.getResultSet().next()) {
-            Block block = new Block(pstat.getResultSet().getString("id"));
-            block.setNotes(pstat.getResultSet().getString("notes"));
+            Block block = new Block(pstat.getResultSet().getString("block_id"));
+            block.setNotes(pstat.getResultSet().getString("note"));
             returnList.add(block);
         }
 
@@ -50,9 +50,9 @@ public class Model implements IModel {
         pstat.execute();
         // create the java statement
         while (pstat.getResultSet().next()) {
-            Bed bed = new Bed(pstat.getResultSet().getString("blockid"),
-                    pstat.getResultSet().getString("bedid"));
-            bed.setNotes(pstat.getResultSet().getString("notes"));
+            Bed bed = new Bed(pstat.getResultSet().getString("block_id"),
+                    pstat.getResultSet().getString("bed_id"));
+            bed.setNotes(pstat.getResultSet().getString("note"));
             returnList.add(bed);
         }
         pstat.closeOnCompletion();
@@ -65,12 +65,9 @@ public class Model implements IModel {
     public List<FarmOBJ> getCropsInBed(Bed bed) throws SQLException {
         List<FarmOBJ> returnList = new ArrayList<>();
         CallableStatement pstat = conn.prepareCall("{CALL get_crops_in_bed(?, ?)}");
-        pstat.setString(1, bed.getBedID());
-        pstat.setString(2, bed.getBlockID());
-
-
+        pstat.setString(1, bed.getBlockID());
+        pstat.setString(2, bed.getBedID());
         pstat.execute();
-
 
         while (pstat.getResultSet().next()) {
             Crop crop = new Crop(pstat.getResultSet().getString("crop_name"),
@@ -82,9 +79,9 @@ public class Model implements IModel {
             crop.setFeet_between_plants(pstat.getResultSet().getDouble("feet_between_plants"));
             crop.setPart_num(pstat.getResultSet().getString("part_num"));
             crop.setCost(pstat.getResultSet().getDouble("cost"));
-            crop.setQty(pstat.getResultSet().getInt("qty"));
+            crop.setQty(pstat.getResultSet().getInt("quantity"));
             crop.setPackType(pstat.getResultSet().getString("pack_type"));
-            crop.setNotes(pstat.getResultSet().getString("notes"));
+            crop.setNotes(pstat.getResultSet().getString("note"));
             returnList.add(crop);
         }
         pstat.closeOnCompletion();
@@ -101,8 +98,8 @@ public class Model implements IModel {
         // create the java statement
         ResultSet resultSet = pstat.getResultSet();
         while (resultSet.next()) {
-            TrayLocation trayLocation = new TrayLocation(resultSet.getString("blockid"),
-                    resultSet.getString("bedid"),
+            TrayLocation trayLocation = new TrayLocation(resultSet.getString("block_id"),
+                    resultSet.getString("bed_id"),
                     resultSet.getString("crop_name"),
                     resultSet.getString("variety"),
                     resultSet.getDouble("num_trays"),
@@ -117,15 +114,15 @@ public class Model implements IModel {
     }
 
     @Override
-    public List<FarmOBJ> GetValidBed(int feet) throws SQLException {
+    public List<FarmOBJ> getValidBed(int feet) throws SQLException {
         List<FarmOBJ> returnList = new ArrayList<>();
         CallableStatement pstat = conn.prepareCall("{CALL get_valid_beds(?)}");
         pstat.setInt(1, feet);
         pstat.execute();
         // create the java statement
         while (pstat.getResultSet().next()) {
-            Bed bed = new Bed(pstat.getResultSet().getString("blockid"),
-                    pstat.getResultSet().getString("bedid"));
+            Bed bed = new Bed(pstat.getResultSet().getString("block_id"),
+                    pstat.getResultSet().getString("bed_id"));
             returnList.add(bed);
         }
         pstat.closeOnCompletion();
@@ -143,8 +140,9 @@ public class Model implements IModel {
         pstat.execute();
         // create the java statement
         while (pstat.getResultSet().next()) {
-            Bed bed = new Bed(pstat.getResultSet().getString("blockid"),
-                    pstat.getResultSet().getString("bedid"));
+            Bed bed = new Bed(
+                    pstat.getResultSet().getString("block_id"),
+                    pstat.getResultSet().getString("bed_id"));
             returnList.add(bed);
         }
         pstat.closeOnCompletion();
@@ -155,12 +153,12 @@ public class Model implements IModel {
     @Override
     public List<FarmOBJ> insertOrUpdateBlock(Block block) throws SQLException {
         List<FarmOBJ> returnList = new ArrayList<>();
-        CallableStatement pstat = conn.prepareCall("{CALL blocks_cu(?, ?, ?)}");
+        CallableStatement pstat = conn.prepareCall("{CALL block_cu(?, ?, ?)}");
         String blockID = block.getBlockID();
         String notes = block.getNotes();
         pstat.setString(2, blockID);
         pstat.setString(3, notes);
-        String query = "SELECT id FROM blocks WHERE blocks.id = \"" + blockID + "\";";
+        String query = "SELECT block_id FROM blocks WHERE blocks.block_id = \"" + blockID + "\";";
 
         // create the java statement
         Statement st = conn.createStatement();
@@ -178,8 +176,8 @@ public class Model implements IModel {
         Statement statement = conn.createStatement();
         ResultSet resultSet = statement.executeQuery(querySelect);
         while (resultSet.next()) {
-            Block block2 = new Block(resultSet.getString("id"));
-            block2.setNotes(resultSet.getString("notes"));
+            Block block2 = new Block(resultSet.getString("block_id"));
+            block2.setNotes(resultSet.getString("note"));
             returnList.add(block2);
         }
         data = returnList;
@@ -200,8 +198,8 @@ public class Model implements IModel {
         Statement statement = conn.createStatement();
         ResultSet resultSet = statement.executeQuery(querySelect);
         while (resultSet.next()) {
-            Block block2 = new Block(resultSet.getString("id"));
-            block2.setNotes(resultSet.getString("notes"));
+            Block block2 = new Block(resultSet.getString("block_id"));
+            block2.setNotes(resultSet.getString("note"));
             returnList.add(block2);
         }
         data = returnList;
@@ -212,14 +210,14 @@ public class Model implements IModel {
     public List<FarmOBJ> insertOrUpdateBed(Bed bed) throws SQLException {
         List<FarmOBJ> returnList = new ArrayList<>();
         CallableStatement pstat = conn.prepareCall("{CALL bed_cu(?, ?, ?, ?)}");
-        pstat.setString(2, bed.getBedID());
-        pstat.setString(3, bed.getBlockID());
+        pstat.setString(2, bed.getBlockID());
+        pstat.setString(3, bed.getBedID());
         pstat.setString(4, bed.getNotes());
 
-        String query = "SELECT blockid, bedid " +
-                "FROM bed WHERE " +
-                "bed.bedid = \"" + bed.getBedID() + "\"" +
-                "AND bed.blockid = \"" + bed.getBlockID() + "\";";
+        String query = "SELECT block_id, bed_id " +
+                "FROM beds WHERE " +
+                "beds.bed_id = \"" + bed.getBedID() + "\"" +
+                "AND beds.block_id = \"" + bed.getBlockID() + "\";";
 
         // create the java statement
         Statement st = conn.createStatement();
@@ -232,14 +230,15 @@ public class Model implements IModel {
         st.closeOnCompletion();
         pstat.execute();
         pstat.closeOnCompletion();
-        String querySelect = "SELECT * FROM bed;";
+        String querySelect = "SELECT * FROM beds;";
         // create the java statement
         Statement statement = conn.createStatement();
         ResultSet resultSet = statement.executeQuery(querySelect);
         while (resultSet.next()) {
-            Bed bed2 = new Bed(resultSet.getString("blockid"),
-                    resultSet.getString("bedid"));
-            bed2.setNotes(resultSet.getString("notes"));
+            Bed bed2 = new Bed(
+                    resultSet.getString("block_id"),
+                    resultSet.getString("bed_id"));
+            bed2.setNotes(resultSet.getString("note"));
             returnList.add(bed2);
         }
         data = returnList;
@@ -256,15 +255,15 @@ public class Model implements IModel {
         pstat.execute();
         pstat.closeOnCompletion();
 
-        String querySelect = "SELECT * FROM bed;";
+        String querySelect = "SELECT * FROM beds;";
         // create the java statement
         Statement statement = conn.createStatement();
         ResultSet resultSet = statement.executeQuery(querySelect);
         List<FarmOBJ> returnList = new ArrayList<>();
         while (resultSet.next()) {
-            Bed bed2 = new Bed(resultSet.getString("blockid"),
-                    resultSet.getString("bedid"));
-            bed2.setNotes(resultSet.getString("notes"));
+            Bed bed2 = new Bed(resultSet.getString("block_id"),
+                    resultSet.getString("bed_id"));
+            bed2.setNotes(resultSet.getString("note"));
             returnList.add(bed2);
         }
         pstat.closeOnCompletion();
@@ -275,7 +274,8 @@ public class Model implements IModel {
     @Override
     public List<FarmOBJ> insertOrUpdateCrop(Crop crop) throws SQLException {
         List<FarmOBJ> returnList = new ArrayList<>();
-        CallableStatement pstat = conn.prepareCall("{CALL crop_cu(?, ?, ?, ?,?, ?, ?, ?,?, ?, ?, ?, ?)}");
+        CallableStatement pstat = conn.prepareCall("{CALL crop_cu(?, ?, ?, ?, ?, ?, " +
+                "?, ?,?, ?, ?, ?, ?)}");
         pstat.setString(2, crop.getCropName());
         pstat.setString(3, crop.getVariety());
         pstat.setString(4, crop.getSeed_source());
@@ -288,8 +288,8 @@ public class Model implements IModel {
         pstat.setInt(11, crop.getQty());
         pstat.setString(12, crop.getPackType());
         pstat.setString(13, crop.getNotes());
-        String query = "SELECT crop_name, variety FROM crop WHERE crop.variety = \"" + crop.getVariety() + "\"" +
-                "AND crop.crop_name = \"" + crop.getCropName() + "\";";
+        String query = "SELECT crop_name, variety FROM crops WHERE crops.variety = \""
+                + crop.getVariety() + "\"" + "AND crops.crop_name = \"" + crop.getCropName() + "\";";
 
         // create the java statement
         Statement st = conn.createStatement();
@@ -302,7 +302,7 @@ public class Model implements IModel {
         st.closeOnCompletion();
         pstat.execute();
         pstat.closeOnCompletion();
-        String querySelect = "SELECT * FROM crop;";
+        String querySelect = "SELECT * FROM crops;";
         // create the java statement
         Statement statement = conn.createStatement();
         ResultSet resultSet = statement.executeQuery(querySelect);
@@ -315,9 +315,9 @@ public class Model implements IModel {
             crop2.setFeet_between_plants(resultSet.getDouble("feet_between_plants"));
             crop2.setPart_num(resultSet.getString("part_num"));
             crop2.setCost(resultSet.getDouble("cost"));
-            crop2.setQty(resultSet.getInt("qty"));
+            crop2.setQty(resultSet.getInt("quantity"));
             crop2.setPackType(resultSet.getString("pack_type"));
-            crop2.setNotes(resultSet.getString("notes"));
+            crop2.setNotes(resultSet.getString("note"));
             returnList.add(crop2);
         }
         data = returnList;
@@ -349,10 +349,10 @@ public class Model implements IModel {
         pstat.setDate(7, cropLocation.getProjectedHarvest());
         pstat.setDate(8, cropLocation.getActualHarvest());
         pstat.setString(9, cropLocation.getNotes());
-        String query = "SELECT blockid, bedid, crop_name, variety " +
-                "FROM croplocation WHERE " +
-                "croplocation.bedid = \"" + cropLocation.getBedID() + "\"" +
-                "AND croplocation.blockid = \"" + cropLocation.getBlockID() + "\"" +
+        String query = "SELECT block_id, bed_id, crop_name, variety " +
+                "FROM croplocations WHERE " +
+                "croplocation.bed_id = \"" + cropLocation.getBedID() + "\"" +
+                "AND croplocation.block_id = \"" + cropLocation.getBlockID() + "\"" +
                 "AND croplocation.variety = \"" + cropLocation.getVariety() + "\"" +
                 "AND croplocation.crop_name = \"" + cropLocation.getCropName() + "\";";
 
@@ -367,19 +367,19 @@ public class Model implements IModel {
         st.closeOnCompletion();
         pstat.execute();
         pstat.closeOnCompletion();
-        String querySelect = "SELECT * FROM croplocation;";
+        String querySelect = "SELECT * FROM croplocations;";
         // create the java statement
         Statement statement = conn.createStatement();
         ResultSet resultSet = statement.executeQuery(querySelect);
         while (resultSet.next()) {
-            CropLocation cropLocation2 = new CropLocation(resultSet.getString("blockid"),
-                    resultSet.getString("bedid"),
+            CropLocation cropLocation2 = new CropLocation(resultSet.getString("block_id"),
+                    resultSet.getString("bed_id"),
                     resultSet.getString("crop_name"),
                     resultSet.getString("variety"));
             cropLocation2.setNumPlants(resultSet.getInt("num_plants"));
-            cropLocation2.setProjectedHarvest(resultSet.getDate("projectedHarvest"));
-            cropLocation2.setActualHarvest(resultSet.getDate("actualHarvest"));
-            cropLocation2.setNotes(resultSet.getString("notes"));
+            cropLocation2.setProjectedHarvest(resultSet.getDate("projected_harvest"));
+            cropLocation2.setActualHarvest(resultSet.getDate("actual_harvest"));
+            cropLocation2.setNotes(resultSet.getString("note"));
             returnList.add(cropLocation2);
         }
         data = returnList;
@@ -403,14 +403,14 @@ public class Model implements IModel {
         ResultSet resultSet = statement.executeQuery(querySelect);
         ArrayList returnList = new ArrayList();
         while (resultSet.next()) {
-            CropLocation cropLocation2 = new CropLocation(resultSet.getString("blockid"),
-                    resultSet.getString("bedid"),
+            CropLocation cropLocation2 = new CropLocation(resultSet.getString("block_id"),
+                    resultSet.getString("bed_id"),
                     resultSet.getString("crop_name"),
                     resultSet.getString("variety"));
             cropLocation2.setNumPlants(resultSet.getInt("num_plants"));
-            cropLocation2.setProjectedHarvest(resultSet.getDate("projectedHarvest"));
-            cropLocation2.setActualHarvest(resultSet.getDate("actualHarvest"));
-            cropLocation2.setNotes(resultSet.getString("notes"));
+            cropLocation2.setProjectedHarvest(resultSet.getDate("projected_harvest"));
+            cropLocation2.setActualHarvest(resultSet.getDate("actual_harvest"));
+            cropLocation2.setNotes(resultSet.getString("note"));
             returnList.add(cropLocation2);
         }
         data = returnList;
@@ -420,7 +420,7 @@ public class Model implements IModel {
     @Override
     public List<FarmOBJ> insertOrUpdateTrayLocation(TrayLocation trayLocation) throws SQLException {
         List<FarmOBJ> returnList = new ArrayList<>();
-        CallableStatement pstat = conn.prepareCall("{CALL traylocations_cu(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+        CallableStatement pstat = conn.prepareCall("{CALL traylocation_cu(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
         pstat.setString(2, trayLocation.getBlockID());
         pstat.setString(3, trayLocation.getBedID());
         pstat.setString(4, trayLocation.getCropName());
@@ -430,10 +430,10 @@ public class Model implements IModel {
         pstat.setString(8, trayLocation.getSoil_type());
         pstat.setInt(9, trayLocation.getSeeds_per_cell());
 
-        String query = "SELECT blockid, bedid, crop_name, variety " +
+        String query = "SELECT block_id, bed_id, crop_name, variety " +
                 "FROM traylocations WHERE " +
-                "traylocations.bedid = \"" + trayLocation.getBedID() + "\"" +
-                "AND traylocations.blockid = \"" + trayLocation.getBlockID() + "\"" +
+                "traylocations.bed_id = \"" + trayLocation.getBedID() + "\"" +
+                "AND traylocations.block_id = \"" + trayLocation.getBlockID() + "\"" +
                 "AND traylocations.variety = \"" + trayLocation.getVariety() + "\"" +
                 "AND traylocations.crop_name = \"" + trayLocation.getCropName() + "\";";
 
@@ -453,8 +453,8 @@ public class Model implements IModel {
         Statement statement = conn.createStatement();
         ResultSet resultSet = statement.executeQuery(querySelect);
         while (resultSet.next()) {
-            TrayLocation trayLocation2 = new TrayLocation(resultSet.getString("blockid"),
-                    resultSet.getString("bedid"),
+            TrayLocation trayLocation2 = new TrayLocation(resultSet.getString("block_id"),
+                    resultSet.getString("bed_id"),
                     resultSet.getString("crop_name"),
                     resultSet.getString("variety"),
                     resultSet.getDouble("num_trays"),

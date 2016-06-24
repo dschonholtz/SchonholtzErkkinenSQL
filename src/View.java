@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.sql.SQLException;
 
 /**
@@ -1132,7 +1131,7 @@ public class View extends JFrame {
                         throw new SQLException("Field must be int");
                     }
 
-                    model.GetValidBed(feetFinal);
+                    model.getValidBed(feetFinal);
                     errorLabel.setText("");
                     repaint();
                     revalidate();

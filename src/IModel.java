@@ -27,7 +27,7 @@ public interface IModel {
      * @param feet - The feet comparison
      * @return - The beds that have at least that many feet
      */
-    List<FarmOBJ> GetValidBed(int feet) throws SQLException;
+    List<FarmOBJ> getValidBed(int feet) throws SQLException;
 
     /**
      *
