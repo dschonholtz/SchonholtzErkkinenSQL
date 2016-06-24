@@ -8,6 +8,7 @@ public class Bed implements FarmOBJ{
     private String blockID;
     private String bedID;
     private String notes;
+
     public Bed(String blockID, String bedID) {
         if(blockID.length() > 2  || blockID.equals("")) {
             throw new IllegalArgumentException("BlockID's are constrained to 1 or 2 characters");

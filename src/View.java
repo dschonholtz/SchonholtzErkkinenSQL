@@ -441,7 +441,8 @@ public class View extends JFrame {
                     errorLabel.setText("");
                     repaint();
                     revalidate();
-                } catch (Exception e1) {
+                } catch (Exception elephant) {
+                    elephant.printStackTrace();
                     errorLabel.setText("Invalid Field");
                 }
             }

@@ -65,8 +65,8 @@ public class Model implements IModel {
     public List<FarmOBJ> getCropsInBed(Bed bed) throws SQLException {
         List<FarmOBJ> returnList = new ArrayList<>();
         CallableStatement pstat = conn.prepareCall("{CALL get_crops_in_bed(?, ?)}");
-        pstat.setString(1, bed.getBlockID());
-        pstat.setString(2, bed.getBedID());
+        pstat.setString(1, bed.getBedID());
+        pstat.setString(2, bed.getBlockID());
 
 
         pstat.execute();
@@ -255,7 +255,21 @@ public class Model implements IModel {
 
         pstat.execute();
         pstat.closeOnCompletion();
-        return null;
+
+        String querySelect = "SELECT * FROM bed;";
+        // create the java statement
+        Statement statement = conn.createStatement();
+        ResultSet resultSet = statement.executeQuery(querySelect);
+        List<FarmOBJ> returnList = new ArrayList<>();
+        while (resultSet.next()) {
+            Bed bed2 = new Bed(resultSet.getString("blockid"),
+                    resultSet.getString("bedid"));
+            bed2.setNotes(resultSet.getString("notes"));
+            returnList.add(bed2);
+        }
+        pstat.closeOnCompletion();
+        data = returnList;
+        return returnList;
     }
 
     @Override
