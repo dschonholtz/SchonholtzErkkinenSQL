@@ -351,10 +351,10 @@ public class Model implements IModel {
         pstat.setString(9, cropLocation.getNotes());
         String query = "SELECT block_id, bed_id, crop_name, variety " +
                 "FROM croplocations WHERE " +
-                "croplocation.bed_id = \"" + cropLocation.getBedID() + "\"" +
-                "AND croplocation.block_id = \"" + cropLocation.getBlockID() + "\"" +
-                "AND croplocation.variety = \"" + cropLocation.getVariety() + "\"" +
-                "AND croplocation.crop_name = \"" + cropLocation.getCropName() + "\";";
+                "croplocations.bed_id = \"" + cropLocation.getBedID() + "\"" +
+                "AND croplocations.block_id = \"" + cropLocation.getBlockID() + "\"" +
+                "AND croplocations.variety = \"" + cropLocation.getVariety() + "\"" +
+                "AND croplocations.crop_name = \"" + cropLocation.getCropName() + "\";";
 
         // create the java statement
         Statement st = conn.createStatement();
@@ -397,7 +397,7 @@ public class Model implements IModel {
 
         pstat.execute();
         pstat.closeOnCompletion();
-        String querySelect = "SELECT * FROM croplocation;";
+        String querySelect = "SELECT * FROM croplocations;";
         // create the java statement
         Statement statement = conn.createStatement();
         ResultSet resultSet = statement.executeQuery(querySelect);
@@ -425,10 +425,10 @@ public class Model implements IModel {
         pstat.setString(3, trayLocation.getBedID());
         pstat.setString(4, trayLocation.getCropName());
         pstat.setString(5, trayLocation.getVariety());
-        pstat.setDouble(6, trayLocation.getNum_trays());
-        pstat.setInt(7, trayLocation.getTray_type());
+        pstat.setObject(6, trayLocation.getNum_trays());
+        pstat.setObject(7, trayLocation.getTray_type());
         pstat.setString(8, trayLocation.getSoil_type());
-        pstat.setInt(9, trayLocation.getSeeds_per_cell());
+        pstat.setObject(9, trayLocation.getSeeds_per_cell());
 
         String query = "SELECT block_id, bed_id, crop_name, variety " +
                 "FROM traylocations WHERE " +
