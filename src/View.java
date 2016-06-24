@@ -867,6 +867,7 @@ public class View extends JFrame {
                     revalidate();
                     errorLabel.setText("");
                 } catch (Exception e1) {
+                    e1.printStackTrace();
                     errorLabel.setText("Invalid Field");
                 }
             }
@@ -938,6 +939,7 @@ public class View extends JFrame {
                     model.deleteCropLocationTrayLocation(cropLocation);
                     errorLabel.setText("");
                 } catch (Exception e1) {
+                    e1.printStackTrace();
                     errorLabel.setText("Invalid Field");
                 }
                 repaint();
@@ -1055,6 +1057,7 @@ public class View extends JFrame {
                     repaint();
                     revalidate();
                 } catch (Exception e1) {
+                    e1.printStackTrace();
                     errorLabel.setText("Invalid field");
                 }
             }

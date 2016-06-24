@@ -90,10 +90,20 @@ public class CropLocation implements FarmOBJ {
         Date projectedHarvest1;
         Date actualHarvest1;
         try {
-            projectedHarvest1 = Date.valueOf(projectedHarvestYear + "-" +
-                    projectedHarvestMonth + "-" + projectedHarvestDay);
-            actualHarvest1 = Date.valueOf(actualHarvestYear + "-" +
-                    actualHarvestMonth + "-" + actualHarvestDay);
+            if (projectedHarvestYear.equals("") && projectedHarvestMonth.equals("") && projectedHarvestDay.equals("")) {
+                projectedHarvest1 = null;
+            }
+            else {
+                projectedHarvest1 = Date.valueOf(projectedHarvestYear + "-" +
+                        projectedHarvestMonth + "-" + projectedHarvestDay);
+            }
+            if (actualHarvestYear.equals("") && actualHarvestMonth.equals("") && actualHarvestDay.equals("")) {
+                actualHarvest1 = null;
+            }
+            else {
+                actualHarvest1 = Date.valueOf(actualHarvestYear + "-" +
+                        actualHarvestMonth + "-" + actualHarvestDay);
+            }
         }
         catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid Dates");
