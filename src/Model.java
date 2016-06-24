@@ -345,7 +345,7 @@ public class Model implements IModel {
         pstat.setString(3, cropLocation.getBedID());
         pstat.setString(4, cropLocation.getCropName());
         pstat.setString(5, cropLocation.getVariety());
-        pstat.setInt(6, cropLocation.getNumPlants());
+        pstat.setObject(6, cropLocation.getNumPlants());
         pstat.setDate(7, cropLocation.getProjectedHarvest());
         pstat.setDate(8, cropLocation.getActualHarvest());
         pstat.setString(9, cropLocation.getNotes());
