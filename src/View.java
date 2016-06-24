@@ -76,6 +76,7 @@ public class View extends JFrame {
                     concreteView.repaint();
                     showButtonButton();
                 } catch (Exception exception) {
+                    exception.printStackTrace();
                     statusLabel.setText("Invalid password or username please try again");
                 }
             }
@@ -441,7 +442,6 @@ public class View extends JFrame {
                     repaint();
                     revalidate();
                 } catch (Exception elephant) {
-                    elephant.printStackTrace();
                     errorLabel.setText("Invalid Field");
                 }
             }
@@ -547,7 +547,7 @@ public class View extends JFrame {
         concreteView.add(numSeeds);
 
 
-        JLabel germinationYieldProjLabel = new JLabel("Projected Germination Yield(Double)");
+        JLabel germinationYieldProjLabel = new JLabel("Proj. Germination Yield(Decimal)");
         germinationYieldProjLabel.setForeground(Color.white);
         germinationYieldProjLabel.setBounds(buttonX, buttonY + buttonHeight * 9, buttonWidth, buttonHeight);
         concreteView.add(germinationYieldProjLabel);
@@ -557,7 +557,7 @@ public class View extends JFrame {
         concreteView.add(germinationProj);
 
 
-        JLabel germinationYieldActLabel = new JLabel("Actual Germination Yield(Double)");
+        JLabel germinationYieldActLabel = new JLabel("Act. Germination Yield(Decimal)");
         germinationYieldActLabel.setForeground(Color.white);
         germinationYieldActLabel.setBounds(buttonX, buttonY + buttonHeight * 11, buttonWidth, buttonHeight);
         concreteView.add(germinationYieldActLabel);
@@ -587,7 +587,7 @@ public class View extends JFrame {
         concreteView.add(partNum);
 
 
-        JLabel costLabel = new JLabel("Cost");
+        JLabel costLabel = new JLabel("Cost(DOUBLE)");
         costLabel.setForeground(Color.white);
         costLabel.setBounds(buttonX, buttonY + buttonHeight * 17, buttonWidth, buttonHeight);
         concreteView.add(costLabel);
@@ -597,7 +597,7 @@ public class View extends JFrame {
         concreteView.add(cost);
 
 
-        JLabel qtyLabel = new JLabel("Quantity");
+        JLabel qtyLabel = new JLabel("Quantity integer");
         qtyLabel.setForeground(Color.white);
         qtyLabel.setBounds(buttonX, buttonY + buttonHeight * 19, buttonWidth, buttonHeight);
         concreteView.add(qtyLabel);
@@ -646,6 +646,7 @@ public class View extends JFrame {
                     repaint();
                     revalidate();
                 } catch (Exception e1) {
+                    e1.printStackTrace();
                     errorLabel.setText("Invalid field");
                 }
             }
@@ -994,7 +995,7 @@ public class View extends JFrame {
         varietyField.setBounds(buttonX, buttonY + buttonHeight * 8, buttonWidth, buttonHeight);
         concreteView.add(varietyField);
 
-        JLabel numTraysLabel = new JLabel("Number of Trays (Double)");
+        JLabel numTraysLabel = new JLabel("Number of Trays (Decimal)");
         numTraysLabel.setForeground(Color.white);
         numTraysLabel.setBounds(buttonX, buttonY + buttonHeight * 9, buttonWidth, buttonHeight);
         concreteView.add(numTraysLabel);
@@ -1013,7 +1014,7 @@ public class View extends JFrame {
         concreteView.add(trayType);
 
 
-        JLabel soilTypeLabel = new JLabel("Tray Type (Integer)");
+        JLabel soilTypeLabel = new JLabel("Soil Type (Integer)");
         soilTypeLabel.setForeground(Color.white);
         soilTypeLabel.setBounds(buttonX, buttonY + buttonHeight * 13, buttonWidth, buttonHeight);
         concreteView.add(soilTypeLabel);

@@ -45,18 +45,42 @@ public class Crop implements FarmOBJ{
             throw new IllegalArgumentException("Germination yields must be valid");
         }
 
+        if(part_num.equals("")) {
+            this.part_num = null;
+        }
+        else {
+            this.part_num = part_num;
+        }
+
+        if(packType.equals("")) {
+            this.packType = null;
+        }
+        else {
+            this.packType = packType;
+        }
+
+        if(seed_source.equals("")) {
+            this.seed_source = null;
+        }
+        else {
+            this.seed_source = seed_source;
+        }
+
+        if(notes.equals("")) {
+            this.notes = null;
+        }
+        else {
+            this.notes = notes;
+        }
+
         this.cropName = cropName;
         this.variety = variety;
         this.num_seeds = num_seeds;
         this.germination_yield_proj = germination_yield_proj;
         this.germination_yield_act = germination_yield_act;
         this.feet_between_plants = feet_between_plants;
-        this.part_num = part_num;
         this.cost = cost;
         this.qty = qty;
-        this.packType = packType;
-        this.seed_source = seed_source;
-        this.notes = notes;
     }
 
 
@@ -141,18 +165,41 @@ public class Crop implements FarmOBJ{
             throw new IllegalArgumentException("Variety must be valid");
         }
 
+        if(part_num.equals("")) {
+            this.part_num = null;
+        }
+        else {
+            this.part_num = part_num;
+        }
+
+        if(packType.equals("")) {
+            this.packType = null;
+        }
+        else {
+            this.packType = packType;
+        }
+
+        if(seed_source.equals("")) {
+            this.seed_source = null;
+        }
+        else {
+            this.seed_source = seed_source;
+        }
+
+        if(notes.equals("")) {
+            this.notes = null;
+        }
+        else {
+            this.notes = notes;
+        }
         this.cropName = cropName;
         this.variety = variety;
         this.num_seeds = numSeedsFinal;
         this.germination_yield_proj = germinationProjFinal;
         this.germination_yield_act = germinationActFinal;
         this.feet_between_plants = feetBetweenPlantsFinal;
-        this.part_num = part_num;
         this.cost = costFinal;
         this.qty = qtyFinal;
-        this.packType = packType;
-        this.seed_source = seed_source;
-        this.notes = notes;
     }
 
     public Crop(String cropName, String variety) {
@@ -171,56 +218,51 @@ public class Crop implements FarmOBJ{
     }
 
     public void setSeed_source(String seed_source) {
-        if(seed_source.length() > 256) {
-            throw new IllegalArgumentException("Seed source must be less than 256 characters");
+        if(seed_source == null || seed_source.equals("")) {
+            this.seed_source = null;
         }
-        this.seed_source = seed_source;
+        else {
+            if(seed_source.length() > 256) {
+                throw new IllegalArgumentException("Seed source must be less than 256 characters");
+            }
+            this.seed_source = seed_source;
+        }
+
     }
 
 
     public void setNum_seeds(Integer num_seeds) {
+        if(num_seeds < 0) {
+            throw new IllegalArgumentException("Number of seeds must be positive");
+        }
         this.num_seeds = num_seeds;
-    }
-
-    public void setGermination_yield_proj(double germination_yield_proj) {
-        this.germination_yield_proj = germination_yield_proj;
-    }
-
-
-    public void setGermination_yield_act(double germination_yield_act) {
-        this.germination_yield_act = germination_yield_act;
-    }
-
-    public void setFeet_between_plants(double feet_between_plants) {
-        this.feet_between_plants = feet_between_plants;
     }
 
 
     public void setPart_num(String part_num) {
-        if(part_num.length() > 256) {
-            throw new IllegalArgumentException("Part Numbers have a limit of 256 characters.");
+        if(part_num == null || part_num.equals("")) {
+            this.part_num = null;
         }
-        this.part_num = part_num;
-    }
-
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-
-
-    public void setQty(int qty) {
-        this.qty = qty;
+        else {
+            if(part_num.length() > 256) {
+                throw new IllegalArgumentException("Part Numbers have a limit of 256 characters.");
+            }
+            this.part_num = part_num;
+        }
     }
 
 
     public void setPackType(String packType) {
-        this.packType = packType;
+        if(packType == null || packType.equals("")) {
+            this.packType = null;
+        }else {
+            this.packType = packType;
+        }
     }
 
 
     public void setNotes(String notes) {
-        if(notes == null) {
+        if(notes == null || notes.equals("")) {
             this.notes = null;
             return;
         }
@@ -259,16 +301,9 @@ public class Crop implements FarmOBJ{
         return cropName;
     }
 
-    public void setCropName(String cropName) {
-        this.cropName = cropName;
-    }
 
     public String getVariety() {
         return variety;
-    }
-
-    public void setVariety(String variety) {
-        this.variety = variety;
     }
 
     public String getSeed_source() {
@@ -284,6 +319,9 @@ public class Crop implements FarmOBJ{
     }
 
     public void setGermination_yield_proj(Double germination_yield_proj) {
+        if(germination_yield_proj < 0) {
+            throw new IllegalArgumentException("Germination yield must be greater than or equal to zero");
+        }
         this.germination_yield_proj = germination_yield_proj;
     }
 
@@ -292,6 +330,9 @@ public class Crop implements FarmOBJ{
     }
 
     public void setGermination_yield_act(Double germination_yield_act) {
+        if(germination_yield_act < 0) {
+            throw new IllegalArgumentException("Germination yield must be greater than or equal to zero");
+        }
         this.germination_yield_act = germination_yield_act;
     }
 
@@ -300,6 +341,9 @@ public class Crop implements FarmOBJ{
     }
 
     public void setFeet_between_plants(Double feet_between_plants) {
+        if(feet_between_plants < 0) {
+            throw new IllegalArgumentException("Feet between plants must be greater than zero");
+        }
         this.feet_between_plants = feet_between_plants;
     }
 
